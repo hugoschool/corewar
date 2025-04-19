@@ -1,0 +1,14 @@
+# Binaries
+corewar
+*.a
+*.o
+*.out
+
+# Tests
+tests/B-CPE-200_corewar_binaries
+
+# Other
+*.pdf
+
+# VSCode
+.vscode
