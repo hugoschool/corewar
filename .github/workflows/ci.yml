@@ -1,0 +1,57 @@
+name: CI
+
+env:
+    EXECUTABLES: corewar
+
+on:
+    push:
+    pull_request:
+        types: [opened, ready_for_review, reopened]
+
+jobs:
+    check_coding_style:
+        name: Check Coding Style
+        runs-on: ubuntu-latest
+        container:
+            image: ghcr.io/epitech/coding-style-checker:latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+            - name: Run Coding Style
+              run: check.sh $(pwd) $(pwd)
+            - name: Check errors
+              run: |
+                while read line; do
+                    file="$(echo "$line" | cut -d ':' -f 1)"
+                    line_nb="$(echo "$line" | cut -d ':' -f 2)"
+                    type="$(echo "$line" | cut -d ' ' -f 2 | cut -d ':' -f 1)"
+                    error_code="$(echo "$line" | cut -d ':' -f 4)"
+                    title="$type coding style error"
+                    echo "::error file=$file,line=$line_nb,col=0,title=$title::$error_code"
+                done <coding-style-reports.log
+                if [ -s coding-style-reports.log ]; then
+                    exit 1
+                fi
+
+    check_program_compilation:
+        name: Check program compilation
+        runs-on: ubuntu-latest
+        container:
+            image: epitechcontent/epitest-docker:latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+            - name: Compiling program
+              timeout-minutes: 2
+              run: make -j
+            - name: Cleaning repo
+              run: make clean
+            - name: Verify executables
+              run: |
+                for executable in $(echo ${{ env.EXECUTABLES }} | sed "s/,/ /g")
+                do
+                    if [ ! -e "$executable" ]; then
+                        echo "::error title=Executable $executable not found"
+                        exit 1
+                    fi
+                done

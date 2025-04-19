@@ -23,10 +23,10 @@ $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) $(LDLIBS)
 
 clean:
-	$(RM) -f $(OBJ)
+	$(RM) $(OBJ)
 
 fclean:	clean
-	$(RM) -f $(NAME)
+	$(RM) $(NAME)
 
 re:	fclean all
 
