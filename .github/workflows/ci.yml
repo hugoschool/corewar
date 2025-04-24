@@ -43,7 +43,7 @@ jobs:
               uses: actions/checkout@v4
             - name: Compiling program
               timeout-minutes: 2
-              run: make -j
+              run: make
             - name: Cleaning repo
               run: make clean
             - name: Verify executables
