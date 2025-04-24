@@ -4,6 +4,9 @@ corewar
 *.o
 *.out
 
+# Libs
+include/my.h
+
 # Tests
 tests/B-CPE-200_corewar_binaries
 

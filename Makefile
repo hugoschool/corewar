@@ -10,22 +10,30 @@ OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -pedantic
 CPPFLAGS	=	-I ./include/
+LDFLAGS	=	-L $(dir $(LIBMY))
+LDLIBS	=	-lmy
 
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
 endif
 
 NAME	=	corewar
+LIBMY	=	./lib/my/libmy.a
 
-all:	$(NAME)
+all:	$(LIBMY) $(NAME)
+
+$(LIBMY):
+	$(MAKE) -C $(dir $(LIBMY))
 
 $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) $(LDLIBS)
 
 clean:
+	$(MAKE) -C $(dir $(LIBMY)) clean
 	$(RM) $(OBJ)
 
 fclean:	clean
+	$(MAKE) -C $(dir $(LIBMY)) fclean
 	$(RM) $(NAME)
 
 re:	fclean all
