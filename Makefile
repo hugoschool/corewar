@@ -5,7 +5,9 @@
 ## Makefile
 ##
 
-SRC	=	src/main.c
+SRC	=	src/main.c \
+		src/op.c \
+		src/flags.c
 OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -pedantic

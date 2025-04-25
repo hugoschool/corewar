@@ -10,5 +10,23 @@
 
     #include "my.h"
     #include "op.h"
+    #include <stdbool.h>
+
+    #define MAX_CHAMPIONS_AMT 4
+
+// Flags
+typedef struct {
+    bool active;
+    int prog_number;
+    int load_address;
+    char *prog_name;
+} flag_prog_t;
+
+typedef struct flags_s {
+    int dump;
+    flag_prog_t *champions;
+} flags_t;
+
+flags_t *parse_flags(int argc, char **argv);
 
 #endif

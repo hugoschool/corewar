@@ -28,9 +28,14 @@ static int print_help(void)
 
 int main(int argc, char **argv)
 {
+    flags_t *flags = NULL;
+
     if (argc < 2)
         return 84;
     if (my_strcmp(argv[1], "-h") == 0)
         return print_help();
-    return 84;
+    flags = parse_flags(argc, argv);
+    if (!flags)
+        return 84;
+    return 0;
 }
