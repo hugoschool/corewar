@@ -7,6 +7,12 @@
 
 #include "corewar.h"
 
+void free_flags(flags_t *flags)
+{
+    free(flags->champions);
+    free(flags);
+}
+
 static flags_t *init_flags(void)
 {
     flags_t *flags = malloc(sizeof(flags_t));

@@ -37,5 +37,6 @@ int main(int argc, char **argv)
     flags = parse_flags(argc, argv);
     if (!flags)
         return 84;
+    free_flags(flags);
     return 0;
 }
