@@ -9,6 +9,10 @@
 
 void free_flags(flags_t *flags)
 {
+    for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
+        if (flags->champions[i].fp)
+            fclose(flags->champions[i].fp);
+    }
     free(flags->champions);
     free(flags);
 }
@@ -35,6 +39,7 @@ static flag_prog_t *init_champions(void)
         champions[i].load_address = 0;
         champions[i].prog_name = NULL;
         champions[i].prog_number = 0;
+        champions[i].fp = NULL;
     }
     return champions;
 }
@@ -113,6 +118,22 @@ static int handle_parse_dump(flags_t *flags, int argc, char **argv, int *start)
         return 0;
 }
 
+static bool verify_champions(flag_prog_t *champions)
+{
+    for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
+        if ((champions[i].prog_number != 0
+            || champions[i].load_address != 0)
+            && !champions[i].active)
+            return false;
+        if (!champions[i].active)
+            break;
+        champions[i].fp = fopen(champions[i].prog_name, "r");
+        if (!champions[i].fp)
+            return false;
+    }
+    return true;
+}
+
 flags_t *parse_flags(int argc, char **argv)
 {
     flags_t *flags = init_flags();
@@ -120,10 +141,18 @@ flags_t *parse_flags(int argc, char **argv)
 
     if (!flags)
         return NULL;
-    if (handle_parse_dump(flags, argc, argv, &start) == -1)
+    if (handle_parse_dump(flags, argc, argv, &start) == -1) {
+        free_flags(flags);
         return NULL;
+    }
     flags->champions = parse_champions(argc, argv, start);
-    if (!flags->champions)
+    if (!flags->champions) {
+        free_flags(flags);
         return NULL;
+    }
+    if (!verify_champions(flags->champions)) {
+        free_flags(flags);
+        return NULL;
+    }
     return flags;
 }

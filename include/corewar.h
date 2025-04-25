@@ -11,6 +11,7 @@
     #include "my.h"
     #include "op.h"
     #include <stdbool.h>
+    #include <stdio.h>
 
     #define MAX_CHAMPIONS_AMT 4
 
@@ -20,6 +21,7 @@ typedef struct {
     int prog_number;
     int load_address;
     char *prog_name;
+    FILE *fp;
 } flag_prog_t;
 
 typedef struct flags_s {
