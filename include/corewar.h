@@ -27,6 +27,7 @@ typedef struct {
 typedef struct flags_s {
     int dump;
     flag_prog_t *champions;
+    int champions_amt;
 } flags_t;
 
 flags_t *parse_flags(int argc, char **argv);

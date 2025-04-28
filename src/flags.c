@@ -82,7 +82,8 @@ static int handle_prog_name(flag_prog_t *champion, int argc, char **argv,
     return 1;
 }
 
-static flag_prog_t *parse_champions(int argc, char **argv, int start)
+static flag_prog_t *parse_champions(flags_t *flags, int argc, char **argv,
+    int start)
 {
     flag_prog_t *champions = init_champions();
     int x = 0;
@@ -98,10 +99,7 @@ static flag_prog_t *parse_champions(int argc, char **argv, int start)
         }
         x++;
     }
-    if (x >= MAX_CHAMPIONS_AMT) {
-        free(champions);
-        return NULL;
-    }
+    flags->champions_amt = x;
     return champions;
 }
 
@@ -150,7 +148,7 @@ flags_t *parse_flags(int argc, char **argv)
         free_flags(flags);
         return NULL;
     }
-    flags->champions = parse_champions(argc, argv, start);
+    flags->champions = parse_champions(flags, argc, argv, start);
     if (!flags->champions) {
         free_flags(flags);
         return NULL;
