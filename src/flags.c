@@ -120,6 +120,8 @@ static int handle_parse_dump(flags_t *flags, int argc, char **argv, int *start)
 
 static bool verify_champions(flag_prog_t *champions)
 {
+    int x = 0;
+
     for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
         if ((champions[i].prog_number != 0
             || champions[i].load_address != 0)
@@ -130,7 +132,10 @@ static bool verify_champions(flag_prog_t *champions)
         champions[i].fp = fopen(champions[i].prog_name, "r");
         if (!champions[i].fp)
             return false;
+        x++;
     }
+    if (x == 1)
+        return false;
     return true;
 }
 

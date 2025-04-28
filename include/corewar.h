@@ -32,4 +32,16 @@ typedef struct flags_s {
 flags_t *parse_flags(int argc, char **argv);
 void free_flags(flags_t *flags);
 
+// Champions
+typedef struct champion_s {
+    header_t header;
+    int registers[REG_NUMBER];
+} champion_t;
+
+// Arena
+typedef struct arena_s {
+    unsigned char arena[MEM_SIZE];
+    champion_t champions[MAX_CHAMPIONS_AMT];
+} arena_t;
+
 #endif
