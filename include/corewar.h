@@ -12,6 +12,7 @@
     #include "op.h"
     #include <stdbool.h>
     #include <stdio.h>
+    #include <sys/stat.h>
 
     #define MAX_CHAMPIONS_AMT 4
 
@@ -43,5 +44,6 @@ typedef struct arena_s {
     unsigned char arena[MEM_SIZE];
     champion_t champions[MAX_CHAMPIONS_AMT];
 } arena_t;
+int vm(flags_t *champions);
 
 #endif
