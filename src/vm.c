@@ -7,53 +7,56 @@
 
 #include "corewar.h"
 
-int add_to_map_and_proc(unsigned char map[MEM_SIZE],
-    flag_prog_t *champ, int champ_s, process_t *proc)
+int add_to_map_and_champ(unsigned char map[MEM_SIZE],
+    flag_prog_t *champ, int champ_s, champion_t *champion)
 {
     struct stat info;
 
     fseek(champ->fp, 0, SEEK_SET);
     stat(champ->prog_name, &info);
-    fread(&(proc->champion->header), sizeof(header_t), 1, champ->fp);
-    proc->index = champ_s;
+    fread(&(champion->header), sizeof(header_t), 1, champ->fp);
+    champion->procs[0].index = champ_s;
     fread(&map[champ_s], sizeof(char), info.st_size - sizeof(header_t),
     champ->fp);
     return 0;
 }
 
-process_t **setup_process(int amount)
+champion_t **setup_champion(int amount)
 {
-    process_t **proc = malloc(sizeof(process_t *) * (amount + 1));
+    champion_t **champ = malloc(sizeof(champion_t *) * (amount + 1));
 
     for (int i = 0; i < amount; i++) {
-        proc[i] = malloc(sizeof(process_t));
-        proc[i]->index = 0;
-        proc[i]->champion = malloc(sizeof(champion_t));
-        proc[i]->champion->nb_player = 0;
+        champ[i] = malloc(sizeof(champion_t));
+        champ[i]->procs = malloc(sizeof(process_t));
+        champ[i]->nb_player = i + 1;
     }
-    proc[amount] = NULL;
-    return proc;
+    champ[amount] = NULL;
+    return champ;
 }
 
-int vm(flags_t *champions)
+void temp_debug(champion_t **champs, unsigned char map[MEM_SIZE])
+{
+    for (int i = 0; i < MEM_SIZE; i++)
+        printf("%02x", map[i]);
+    printf("\n");
+    for (int i = 0; champs[i] != NULL; i++) {
+        printf("%s %d\n", champs[i]->header.prog_name, champs[i]->nb_player);
+        instructions(map, champs[i]);
+    }
+}
+
+int do_vm(flags_t *champions)
 {
     unsigned char vm[MEM_SIZE];
-    int champ_s = 0;
-    process_t **proc = setup_process(champions->champions_amt);
+    int index = 0;
+    champion_t **champ = setup_champion(champions->champions_amt);
 
     for (int i = 0; i < MEM_SIZE; i++)
         vm[i] = 0;
-    for (int i = 0; champions->champions[i].active == true; i++,
-        champ_s += MEM_SIZE / champions->champions_amt) {
-            add_to_map_and_proc(vm, &(champions->champions[i]), champ_s, proc[i]);
-        }
-    for (int i = 0; i < MEM_SIZE; i++)
-        printf("%02x", vm[i]);
-    printf("\n");
-    for (int i = 0; proc[i] != NULL; i++) {
-        printf("%s %d\n", proc[i]->champion->header.prog_name, proc[i]->index);
-        instructions(vm, proc[i]);
+    for (int i = 0; champions->champions[i].active == true; i++) {
+        add_to_map_and_champ(vm, &(champions->champions[i]), index, champ[i]);
+        index += MEM_SIZE / champions->champions_amt;
     }
-
+    temp_debug(champ, vm);
     return 0;
 }

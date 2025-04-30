@@ -13,7 +13,7 @@ const op_t op_tab[] = {
     {"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load", NULL},
     {"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store", NULL},
     {"add", 3, {T_REG, T_REG, T_REG}, 4, 10, "addition", NULL},
-    {"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction",NULL},
+    {"sub", 3, {T_REG, T_REG, T_REG}, 5, 10, "soustraction", NULL},
     {"and", 3, {T_REG | T_DIR | T_IND, T_REG | T_IND | T_DIR, T_REG}, 6, 6,
         "et (and  r1, r2, r3   r1&r2 -> r3", NULL},
     {"or", 3, {T_REG | T_IND | T_DIR, T_REG | T_IND | T_DIR, T_REG}, 7, 6,
@@ -33,4 +33,3 @@ const op_t op_tab[] = {
     {"aff", 1, {T_REG}, 16, 2, "aff", NULL},
     {0, 0, {0}, 0, 0, 0, 0, NULL}
 };
-

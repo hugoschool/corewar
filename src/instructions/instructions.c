@@ -7,7 +7,7 @@
 
 #include "corewar.h"
 
-op_t get_instruction(char map[MEM_SIZE], int index)
+op_t get_instruction(unsigned char map[MEM_SIZE], int index)
 {
     int i = 0;
 
@@ -17,10 +17,10 @@ op_t get_instruction(char map[MEM_SIZE], int index)
     return op_tab[i];
 }
 
-void instructions(char map[MEM_SIZE], process_t *proc)
+void instructions(unsigned char map[MEM_SIZE], champion_t *champ)
 {
-    op_t inst = get_instruction(map, proc->index);
+    op_t inst = get_instruction(map, champ->procs[0].index);
 
     printf("%s\n", inst.mnemonique);
-    // inst.do_inst(map, proc->index);
 }
+// inst.do_inst(map, proc->index);

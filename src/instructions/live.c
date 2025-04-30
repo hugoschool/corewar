@@ -7,9 +7,8 @@
 
 #include "corewar.h"
 
-int live(char map[MEM_SIZE], process_t *fork)
+int live(char map[MEM_SIZE], champion_t *champ)
 {
-
-    mini_printf("Player:%d is alive.\n", fork->champion->nb_player);
+    mini_printf("Player:%d is alive.\n", champ->nb_player);
     return 0;
 }

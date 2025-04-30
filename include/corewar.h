@@ -34,26 +34,27 @@ typedef struct flags_s {
 flags_t *parse_flags(int argc, char **argv);
 void free_flags(flags_t *flags);
 
+//process
+typedef struct {
+    int index;
+    int registers[REG_NUMBER];
+} process_t;
+
 // Champions
 typedef struct champion_s {
     header_t header;
-    int registers[REG_NUMBER];
+    process_t *procs;
     int nb_player;
 } champion_t;
-
-typedef struct {
-    int index;
-    champion_t *champion;
-} process_t;
 
 // Arena
 typedef struct arena_s {
     unsigned char arena[MEM_SIZE];
     champion_t champions[MAX_CHAMPIONS_AMT];
 } arena_t;
-int vm(flags_t *champions);
+int do_vm(flags_t *champions);
 
 // Instructions
-void instructions(char map[MEM_SIZE], process_t *proc);
-int live(char map[MEM_SIZE], process_t *fork);
+void instructions(unsigned char map[MEM_SIZE], champion_t *champ);
+int live(char map[MEM_SIZE], champion_t *champ);
 #endif
