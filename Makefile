@@ -8,7 +8,9 @@
 SRC	=	src/main.c \
 		src/op.c \
 		src/flags.c \
-		src/vm.c
+		src/vm.c \
+		src/instructions/live.c \
+		src/instructions/instructions.c
 OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -pedantic

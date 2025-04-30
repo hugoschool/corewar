@@ -41,6 +41,7 @@ typedef struct op_s {
     char code;
     int nbr_cycles;
     char *comment;
+    int (*do_inst)(char map[MEM_SIZE], int index);
 } op_t;
 
     // size (in bytes)

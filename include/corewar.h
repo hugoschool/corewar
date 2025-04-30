@@ -38,7 +38,13 @@ void free_flags(flags_t *flags);
 typedef struct champion_s {
     header_t header;
     int registers[REG_NUMBER];
+    int nb_player;
 } champion_t;
+
+typedef struct {
+    int index;
+    champion_t *champion;
+} process_t;
 
 // Arena
 typedef struct arena_s {
@@ -47,4 +53,7 @@ typedef struct arena_s {
 } arena_t;
 int vm(flags_t *champions);
 
+// Instructions
+void instructions(char map[MEM_SIZE], process_t *proc);
+int live(char map[MEM_SIZE], process_t *fork);
 #endif
