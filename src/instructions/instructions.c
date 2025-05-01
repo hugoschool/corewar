@@ -22,11 +22,15 @@ void instructions(unsigned char map[MEM_SIZE], champion_t *champ,
 {
     op_t inst = get_instruction(map, champ->procs[proc_index].index);
 
-    if (champ->procs[proc_index].cycles >= inst.nbr_cycles) {
-        do_inst[inst.code](map, champ, proc_index);
-        champ->procs[proc_index].cycles = 0;
-    } else
-        champ->procs[proc_index].cycles++;
     if (champ->procs[proc_index].index >= MEM_SIZE)
         champ->procs[proc_index].index = 0;
+    if (champ->procs[proc_index].cycles >= inst.nbr_cycles) {
+        if (inst.code == 0) {
+            champ->procs[proc_index].index++;
+            return;
+        }
+        do_inst[inst.code - 1](map, champ, proc_index);
+        champ->procs[proc_index].cycles = 0;
+    } else
+        champ->procs[proc_index].cycles += 1;
 }
