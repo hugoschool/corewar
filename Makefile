@@ -10,7 +10,20 @@ SRC	=	src/main.c \
 		src/flags.c \
 		src/vm.c \
 		src/instructions/live.c \
-		src/instructions/instructions.c
+		src/instructions/instructions.c \
+		src/instructions/add.c \
+		src/instructions/aff.c \
+		src/instructions/and.c \
+		src/instructions/fork.c \
+		src/instructions/ld.c \
+		src/instructions/ldi.c \
+		src/instructions/st.c \
+		src/instructions/sti.c \
+		src/instructions/zjump.c \
+		src/gameloop.c \
+		src/instructions/inst_list.c
+
+
 OBJ	=	$(SRC:.c=.o)
 
 CFLAGS	=	-Wall -Wextra -pedantic

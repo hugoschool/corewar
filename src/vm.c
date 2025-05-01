@@ -29,6 +29,10 @@ champion_t **setup_champion(int amount)
         champ[i] = malloc(sizeof(champion_t));
         champ[i]->procs = malloc(sizeof(process_t));
         champ[i]->nb_player = i + 1;
+        champ[i]->alive = false;
+        champ[i]->dead = false;
+        champ[i]->nb_procs = 1;
+        champ[i]->procs[0].cycles = 0;
     }
     champ[amount] = NULL;
     return champ;
@@ -41,7 +45,6 @@ void temp_debug(champion_t **champs, unsigned char map[MEM_SIZE])
     printf("\n");
     for (int i = 0; champs[i] != NULL; i++) {
         printf("%s %d\n", champs[i]->header.prog_name, champs[i]->nb_player);
-        instructions(map, champs[i]);
     }
 }
 
@@ -57,6 +60,7 @@ int do_vm(flags_t *champions)
         add_to_map_and_champ(vm, &(champions->champions[i]), index, champ[i]);
         index += MEM_SIZE / champions->champions_amt;
     }
+    gameloop(vm, champ);
     temp_debug(champ, vm);
     return 0;
 }
