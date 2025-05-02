@@ -15,10 +15,11 @@ champion_t **setup_champion(int amount)
         champ[i] = malloc(sizeof(champion_t));
         champ[i]->procs = malloc(sizeof(process_t));
         champ[i]->nb_player = i + 1;
-        champ[i]->alive = false;
+        champ[i]->alive = true;
         champ[i]->dead = false;
         champ[i]->nb_procs = 1;
         champ[i]->procs[0].cycles = 0;
+        champ[i]->procs[0].registers[0] = i + 1;
     }
     champ[amount] = NULL;
     return champ;

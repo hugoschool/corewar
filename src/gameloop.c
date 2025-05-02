@@ -24,16 +24,32 @@ bool champs_alive(champion_t **champ)
         if (!champ[i]->dead)
             alive++;
     }
-    if (alive > 0)
+    if (alive > 1)
         return true;
     return false;
 }
 
-void do_instructions(unsigned char map[MEM_SIZE], champion_t *champs)
+void set_alive(champion_t **champs, int player_nb)
 {
-    for (int i = 0; i < champs->nb_procs; i++)
-        if (!champs->dead)
-            instructions(map, champs, i);
+    for (int i = 0; champs[i] != NULL; i++) {
+        if (!champs[i]->dead && champs[i]->nb_player == player_nb) {
+            mini_printf("The player %d(%s) is alive.\n",
+            champs[i]->nb_player, champs[i]->header.prog_name);
+            champs[i]->alive = true;
+        }
+    }
+}
+
+void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
+    int index)
+{
+    int nb_player = 0;
+
+    for (int i = 0; i < champs[index]->nb_procs; i++)
+        if (!champs[index]->dead) {
+            nb_player = instructions(map, champs[index], i);
+            set_alive(champs, nb_player);
+        }
 }
 
 void gameloop(unsigned char map[MEM_SIZE], champion_t **champ)
@@ -47,7 +63,7 @@ void gameloop(unsigned char map[MEM_SIZE], champion_t **champ)
         if (!champs_alive(champ))
             break;
         for (int i = 0; champ[i] != NULL; i++)
-            do_instructions(map, champ[i]);
+            do_instructions(map, champ, i);
         if (cycles == CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)) {
             cycles = 0;
             delta_cycles++;
