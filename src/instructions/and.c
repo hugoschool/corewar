@@ -7,19 +7,19 @@
 
 #include "corewar.h"
 
-int do_and(char map[MEM_SIZE], champion_t *champ, int proc_index)
+int do_and(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
     champ->procs[proc_index].index += 11;
     return 0;
 }
 
-int do_or(char map[MEM_SIZE], champion_t *champ, int proc_index)
+int do_or(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
     champ->procs[proc_index].index += 11;
     return 0;
 }
 
-int do_xor(char map[MEM_SIZE], champion_t *champ, int proc_index)
+int do_xor(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
     champ->procs[proc_index].index += 11;
     return 0;

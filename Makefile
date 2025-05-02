@@ -22,7 +22,8 @@ SRC	=	src/main.c \
 		src/instructions/sti.c \
 		src/instructions/zjump.c \
 		src/gameloop.c \
-		src/instructions/inst_list.c
+		src/instructions/inst_list.c \
+		src/utils.c
 
 
 OBJ	=	$(SRC:.c=.o)

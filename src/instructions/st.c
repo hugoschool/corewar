@@ -7,7 +7,7 @@
 
 #include "corewar.h"
 
-int do_st(char map[MEM_SIZE], champion_t *champ, int proc_index)
+int do_st(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
     champ->procs[proc_index].index += 7;
     return 0;

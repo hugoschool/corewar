@@ -12,7 +12,10 @@
     #include "op.h"
     #include <stdbool.h>
     #include <stdio.h>
+    #include <sys/types.h>
     #include <sys/stat.h>
+    #include <limits.h>
+    #include <stdint.h>
 
     #define MAX_CHAMPIONS_AMT 4
 
@@ -62,25 +65,29 @@ int do_vm(flags_t *champions);
 void gameloop(unsigned char map[MEM_SIZE], champion_t **champ);
 
 // Instructions
-void instructions(unsigned char map[MEM_SIZE],
+int instructions(unsigned char map[MEM_SIZE],
     champion_t *champ, int proc_index);
-int live(char map[MEM_SIZE], champion_t *champ, int pro_index);
-int do_st(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_add(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_sub(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_and(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_or(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_xor(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_zjump(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_ld(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_lld(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_ldi(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_lldi(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_sti(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_fork(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_lfork(char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_aff(char map[MEM_SIZE], champion_t *champ, int proc_index);
+int live(unsigned char map[MEM_SIZE], champion_t *champ, int pro_index);
+int do_st(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_add(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_sub(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_and(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_or(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_xor(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_zjump(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_ld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_lld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_ldi(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_lldi(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_sti(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_fork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_lfork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
+int do_aff(unsigned char cmap[MEM_SIZE], champion_t *champ, int proc_index);
 
-extern int const(*do_inst[])(char map[MEM_SIZE],
+extern int const(*do_inst[])(unsigned char map[MEM_SIZE],
     champion_t *champ, int proc_index);
+
+//Utils
+int ltb_endian(int little);
+uint16_t ltb_endian_16(uint16_t little);
 #endif
