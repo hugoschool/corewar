@@ -7,6 +7,7 @@
 
 SRC	=	src/main.c \
 		src/op.c \
+		src/champions.c \
 		src/flags.c \
 		src/vm.c \
 		src/instructions/live.c \

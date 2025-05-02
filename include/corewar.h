@@ -50,6 +50,8 @@ typedef struct champion_s {
     bool alive;
     bool dead;
 } champion_t;
+champion_t **setup_champion(int amount);
+void free_champions(champion_t **champions);
 
 // Arena
 typedef struct arena_s {
