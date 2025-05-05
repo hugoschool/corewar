@@ -31,3 +31,15 @@ uint16_t ltb_endian_16(uint16_t little)
     result = bits[0] | bits[1];
     return result;
 }
+
+args_type_t *byte_to_args(uint8_t byte)
+{
+    header_t header = {0};
+    args_type_t *args = malloc(sizeof(args_type_t) * (sizeof(uint8_t) * 4));
+
+    args[0] = byte >> 6;
+    args[1] = (byte >> 4) & 0b11;
+    args[2] = (byte >> 2) & 0b11;
+    args[3] = (byte) & 0b11;
+    return args;
+}

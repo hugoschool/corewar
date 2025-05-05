@@ -90,4 +90,6 @@ extern int const(*do_inst[])(unsigned char map[MEM_SIZE],
 //Utils
 int ltb_endian(int little);
 uint16_t ltb_endian_16(uint16_t little);
+args_type_t *byte_to_args(uint8_t byte);
+
 #endif
