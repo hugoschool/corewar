@@ -28,7 +28,7 @@ SRC	=	src/main.c \
 
 OBJ	=	$(SRC:.c=.o)
 
-CFLAGS	=	-Wall -Wextra -pedantic
+CFLAGS	=	-Wall -Wextra
 CPPFLAGS	=	-I ./include/
 LDFLAGS	=	-L $(dir $(LIBMY))
 LDLIBS	=	-lmy

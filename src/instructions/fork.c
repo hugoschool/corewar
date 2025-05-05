@@ -7,7 +7,8 @@
 
 #include "corewar.h"
 
-int create_new_proc(unsigned char map[MEM_SIZE], champion_t *champ, int p_index)
+static int create_new_proc(unsigned char map[MEM_SIZE], champion_t *champ,
+    int p_index)
 {
     uint8_t params[2] = {map[champ->procs[p_index].index + 1],
         map[champ->procs[p_index].index + 1]};
