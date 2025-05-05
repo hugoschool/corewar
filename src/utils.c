@@ -34,7 +34,6 @@ uint16_t ltb_endian_16(uint16_t little)
 
 args_type_t *byte_to_args(uint8_t byte)
 {
-    header_t header = {0};
     args_type_t *args = malloc(sizeof(args_type_t) * (sizeof(uint8_t) * 4));
 
     args[0] = byte >> 6;
