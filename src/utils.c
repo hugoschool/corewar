@@ -42,3 +42,14 @@ args_type_t *byte_to_args(uint8_t byte)
     args[3] = (byte) & 0b11;
     return args;
 }
+
+int get_nb_bytes(args_type_t args)
+{
+    if (args == 1)
+        return 1;
+    if (args == 2)
+        return DIR_SIZE;
+    if (args == 3)
+        return IND_SIZE;
+    return 0;
+}

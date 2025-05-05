@@ -11,6 +11,7 @@ uint16_t get_len(unsigned char map[MEM_SIZE], int index, args_type_t type,
     int *nb_bytes)
 {
     uint16_t arg = 0;
+
     if (type == 1) {
         (*nb_bytes)++;
         arg = map[index + *nb_bytes];
@@ -39,5 +40,6 @@ int do_sti(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     for (int i = 0; i < 4; i++)
         map[where + i] = replace[i];
     champ->procs[proc_index].index += count_bytes + 1;
+    free(params);
     return 0;
 }
