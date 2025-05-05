@@ -12,7 +12,7 @@ static void create_new_proc(unsigned char map[MEM_SIZE], champion_t *champ,
 {
     uint8_t params[2] = {map[champ->procs[p_index].index + 1],
         map[champ->procs[p_index].index + 1]};
-    int16_t t_param = (params[0] << 8) + params[1] << 0;
+    int16_t t_param = params[0] << (8 + params[1]) << 0;
 
     champ->procs = realloc(champ->procs, sizeof(process_t) *
         (champ->nb_procs + 1));
