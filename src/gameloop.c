@@ -26,6 +26,10 @@ bool champs_alive(champion_t **champ)
     }
     if (alive > 1)
         return true;
+    for (int i = 0; champ[i] != NULL; i++)
+        if (!champ[i]->dead)
+            mini_printf("The player %d(%d) has won.\n",
+                champ[i]->nb_player, champ[i]->header.prog_name);
     return false;
 }
 
