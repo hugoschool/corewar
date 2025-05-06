@@ -82,9 +82,9 @@ int do_lldi(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 int do_sti(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 int do_fork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 int do_lfork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
-int do_aff(unsigned char cmap[MEM_SIZE], champion_t *champ, int proc_index);
+int do_aff(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 
-extern int const(*do_inst[])(unsigned char map[MEM_SIZE],
+extern int(*do_inst[])(unsigned char map[MEM_SIZE],
     champion_t *champ, int proc_index);
 
 //Utils

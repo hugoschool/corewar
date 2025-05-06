@@ -7,6 +7,14 @@
 
 #include "corewar.h"
 
+void set_up_reg(process_t *proc, int r1)
+{
+    proc->registers[0] = r1 + 1;
+    for (int i = 1; i < REG_NUMBER; i++) {
+        proc->registers[i] = 0;
+    }
+}
+
 champion_t **setup_champion(int amount)
 {
     champion_t **champ = malloc(sizeof(champion_t *) * (amount + 1));
@@ -19,7 +27,7 @@ champion_t **setup_champion(int amount)
         champ[i]->dead = false;
         champ[i]->nb_procs = 1;
         champ[i]->procs[0].cycles = 0;
-        champ[i]->procs[0].registers[0] = i + 1;
+        set_up_reg(&(champ[i]->procs[0]), i);
     }
     champ[amount] = NULL;
     return champ;
