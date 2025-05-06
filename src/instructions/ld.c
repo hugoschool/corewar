@@ -60,7 +60,8 @@ int do_lld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     if (types[0] != 3) {
         champ->procs[proc_index].registers[map[index] - 1] = val;
     } else {
-        champ->procs[proc_index].registers[map[index] - 1] = get_val_ind(map, val);
+        champ->procs[proc_index].registers[map[index] - 1] =
+            get_val_ind(map, val);
     }
     champ->procs[proc_index].index += 1;
     free(types);

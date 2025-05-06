@@ -19,7 +19,8 @@ int get_len(unsigned char map[MEM_SIZE], process_t *proc, args_type_t type,
     }
     if (type == 2) {
         (*nb_bytes) += 2;
-        arg = (map[proc->index + *nb_bytes - 1] << 8) + map[proc->index + *nb_bytes];
+        arg = (map[proc->index + *nb_bytes - 1] << 8) +
+            map[proc->index + *nb_bytes];
     }
     return arg;
 }
@@ -29,8 +30,10 @@ int do_sti(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     int index = champ->procs[proc_index].index;
     args_type_t *params = byte_to_args(map[index + 1]);
     int count_bytes = 2;
-    int targ1 = get_len(map, &(champ->procs[proc_index]), params[1], &count_bytes);
-    int targ2 = get_len(map, &(champ->procs[proc_index]), params[2], &count_bytes);
+    int targ1 = get_len(map, &(champ->procs[proc_index]), params[1],
+        &count_bytes);
+    int targ2 = get_len(map, &(champ->procs[proc_index]), params[2],
+        &count_bytes);
     int where = targ1 + targ2 + index;
     uint8_t replace[4] = {
         champ->procs[proc_index].registers[map[index + 2] - 1] << 24,
