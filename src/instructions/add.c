@@ -33,7 +33,6 @@ int do_sub(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     int index = champ->procs[proc_index].index + 2;
 
     add_or_sub(&champ->procs[proc_index], map, index, true);
-    printf("r%d: %d\n", map[index + 2], champ->procs[proc_index].registers[map[index + 2]]);
     champ->procs[proc_index].index += 5;
     return 0;
 }
