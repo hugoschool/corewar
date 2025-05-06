@@ -9,7 +9,7 @@
 
 void free_flags(flags_t *flags)
 {
-    for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
+    for (int i = 0; i < MAX_CHAMPIONS_AMT && flags->champions; i++) {
         if (flags->champions[i].fp)
             fclose(flags->champions[i].fp);
     }
