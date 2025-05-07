@@ -7,8 +7,7 @@
 
 #include "corewar.h"
 
-int const(*do_inst[])(unsigned char map[MEM_SIZE],
-    champion_t *champ, int nb_proc) = {
+const inst_t do_inst[] = {
     live,
     do_ld,
     do_st,

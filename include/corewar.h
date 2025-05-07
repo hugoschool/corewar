@@ -84,8 +84,10 @@ int do_fork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 int do_lfork(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 int do_aff(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index);
 
-extern int(*do_inst[])(unsigned char map[MEM_SIZE],
+typedef int (*inst_t)(unsigned char map[MEM_SIZE],
     champion_t *champ, int proc_index);
+
+extern const inst_t do_inst[];
 
 //Utils
 int ltb_endian(int little);
