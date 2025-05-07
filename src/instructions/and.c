@@ -58,12 +58,44 @@ int do_and(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 
 int do_or(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    champ->procs[proc_index].index += 11;
+    int index = champ->procs[proc_index].index + 1;
+    args_type_t *types = byte_to_args(map[index]);
+    int value = 0;
+    int cur_val = 0;
+
+    index++;
+    for (int i = 0; i < 2; i++) {
+        cur_val = value_of_type(&(champ->procs[proc_index]), types[i],
+            map, &index);
+        if (value == 0)
+            value = cur_val;
+        else
+            value = value | cur_val;
+    }
+    champ->procs[proc_index].registers[map[index] - 1] = value;
+    champ->procs[proc_index].index += index_nb_bytes(types);
+    free(types);
     return 0;
 }
 
 int do_xor(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    champ->procs[proc_index].index += 11;
+    int index = champ->procs[proc_index].index + 1;
+    args_type_t *types = byte_to_args(map[index]);
+    int value = 0;
+    int cur_val = 0;
+
+    index++;
+    for (int i = 0; i < 2; i++) {
+        cur_val = value_of_type(&(champ->procs[proc_index]), types[i],
+            map, &index);
+        if (value == 0)
+            value = cur_val;
+        else
+            value = value ^ cur_val;
+    }
+    champ->procs[proc_index].registers[map[index] - 1] = value;
+    champ->procs[proc_index].index += index_nb_bytes(types);
+    free(types);
     return 0;
 }
