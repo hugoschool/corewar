@@ -24,12 +24,12 @@ static int value_of_type(process_t *proc, args_type_t type,
 
     if (type == 1) {
         cur_val = proc->registers[map[*index] - 1];
-        *index++;
+        *index = *index + 1;
     }
     if (type == 2) {
         cur_val = (map[*index] << 24) + (map[*index + 1] << 16) +
             (map[*index + 2] << 8) + map[*index + 3];
-        index += 4;
+        *index = *index + 4;
     }
     return cur_val;
 }
