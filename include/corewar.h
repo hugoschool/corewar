@@ -19,6 +19,9 @@
 
     #define MAX_CHAMPIONS_AMT 4
 
+    #define ANSI_RED "\033[1;31m"
+    #define ANSI_RESET "\033[0;0m"
+
 // Flags
 typedef struct {
     bool active;
@@ -90,6 +93,7 @@ typedef int (*inst_t)(unsigned char map[MEM_SIZE],
 extern const inst_t do_inst[];
 
 //Utils
+void print_map(unsigned char map[MEM_SIZE]);
 int ltb_endian(int little);
 uint16_t ltb_endian_16(uint16_t little);
 args_type_t *byte_to_args(uint8_t byte);

@@ -21,21 +21,6 @@ int add_to_map_and_champ(unsigned char map[MEM_SIZE],
     return 0;
 }
 
-void temp_debug(champion_t **champs, unsigned char map[MEM_SIZE])
-{
-    for (int i = 0; i < MEM_SIZE; i++) {
-        if (map[i] > 0)
-            printf("\033[1;31m");
-        printf("%02X", map[i]);
-        if (map[i] > 0)
-            printf("\033[0;0m");
-    }
-    printf("\n");
-    for (int i = 0; champs[i] != NULL; i++) {
-        printf("%s %d\n", champs[i]->header.prog_name, champs[i]->nb_player);
-    }
-}
-
 int do_vm(flags_t *champions)
 {
     unsigned char vm[MEM_SIZE];
@@ -49,7 +34,7 @@ int do_vm(flags_t *champions)
         index += MEM_SIZE / champions->champions_amt;
     }
     gameloop(vm, champ);
-    temp_debug(champ, vm);
+    print_map(vm);
     free_champions(champ);
     return 0;
 }

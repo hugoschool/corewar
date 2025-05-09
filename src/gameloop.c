@@ -59,7 +59,6 @@ void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
 void gameloop(unsigned char map[MEM_SIZE], champion_t **champ)
 {
     int cycles = 0;
-    int nb_alive = 0;
     int delta_cycles = 0;
     int nb_delta = 0;
 
