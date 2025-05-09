@@ -15,9 +15,12 @@ int add_to_map_and_champ(unsigned char map[MEM_SIZE],
     fseek(champ.fp, 0, SEEK_SET);
     stat(champ.prog_name, &info);
     fread(&(champion->header), sizeof(header_t), 1, champ.fp);
-    champion->procs[0].index = index;
-    fread(&map[index], sizeof(char), info.st_size - sizeof(header_t),
-        champ.fp);
+    if (champ.load_address != -1)
+        champion->procs[0].index = champ.load_address;
+    else
+        champion->procs[0].index = index;
+    fread(&map[champion->procs[0].index], sizeof(char),
+        info.st_size - sizeof(header_t), champ.fp);
     return 0;
 }
 
