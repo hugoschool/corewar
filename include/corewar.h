@@ -61,10 +61,6 @@ champion_t **setup_champions(flags_t *flags);
 void free_champions(champion_t **champions);
 
 // Arena
-typedef struct arena_s {
-    unsigned char arena[MEM_SIZE];
-    champion_t champions[MAX_CHAMPIONS_AMT];
-} arena_t;
 int do_vm(flags_t *flags);
 void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ);
 
