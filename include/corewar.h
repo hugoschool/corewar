@@ -17,6 +17,7 @@
     #include <limits.h>
     #include <stdint.h>
 
+    #define DEFAULT_FLAG_NB -1
     #define MAX_CHAMPIONS_AMT 4
 
     #define ANSI_RED "\033[1;31m"
@@ -56,7 +57,7 @@ typedef struct champion_s {
     bool alive;
     bool dead;
 } champion_t;
-champion_t **setup_champion(int amount);
+champion_t **setup_champions(flags_t *flags);
 void free_champions(champion_t **champions);
 
 // Arena

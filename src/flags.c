@@ -23,7 +23,7 @@ static flags_t *init_flags(void)
 
     if (!flags)
         return NULL;
-    flags->dump = -1;
+    flags->dump = DEFAULT_FLAG_NB;
     flags->champions = NULL;
     return flags;
 }
@@ -36,9 +36,9 @@ static flag_prog_t *init_champions(void)
         return NULL;
     for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
         champions[i].active = false;
-        champions[i].load_address = 0;
+        champions[i].load_address = DEFAULT_FLAG_NB;
         champions[i].prog_name = NULL;
-        champions[i].prog_number = 0;
+        champions[i].prog_number = DEFAULT_FLAG_NB;
         champions[i].fp = NULL;
     }
     return champions;
@@ -121,8 +121,8 @@ static bool verify_champions(flag_prog_t *champions)
     int x = 0;
 
     for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
-        if ((champions[i].prog_number != 0
-            || champions[i].load_address != 0)
+        if ((champions[i].prog_number != DEFAULT_FLAG_NB
+            || champions[i].load_address != DEFAULT_FLAG_NB)
             && !champions[i].active)
             return false;
         if (!champions[i].active)

@@ -15,14 +15,28 @@ void set_up_reg(process_t *proc, int r1)
     }
 }
 
-champion_t **setup_champion(int amount)
+int update_nb_player(champion_t *champion, int prog_number, int champ_i)
 {
+    if (prog_number != -1)
+        champion->nb_player = prog_number;
+    else {
+        champion->nb_player = champ_i;
+        champ_i++;
+    }
+    return champ_i;
+}
+
+champion_t **setup_champions(flags_t *flags)
+{
+    int amount = flags->champions_amt;
+    int champ_i = 1;
     champion_t **champ = malloc(sizeof(champion_t *) * (amount + 1));
 
     for (int i = 0; i < amount; i++) {
         champ[i] = malloc(sizeof(champion_t));
         champ[i]->procs = malloc(sizeof(process_t));
-        champ[i]->nb_player = i + 1;
+        champ_i = update_nb_player(champ[i], flags->champions[i].prog_number,
+            champ_i);
         champ[i]->alive = true;
         champ[i]->dead = false;
         champ[i]->nb_procs = 1;
