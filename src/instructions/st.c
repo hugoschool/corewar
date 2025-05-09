@@ -7,7 +7,7 @@
 
 #include "corewar.h"
 
-int rep_map(int val, unsigned char map[MEM_SIZE], int index)
+static void rep_map(int val, unsigned char map[MEM_SIZE], int index)
 {
     map[index] = (val << 24);
     map[index + 1] = val << 16;
