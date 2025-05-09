@@ -23,7 +23,7 @@ static flags_t *init_flags(void)
 
     if (!flags)
         return NULL;
-    flags->dump = 0;
+    flags->dump = -1;
     flags->champions = NULL;
     return flags;
 }

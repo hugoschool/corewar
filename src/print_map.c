@@ -54,3 +54,10 @@ void print_map(unsigned char map[MEM_SIZE])
     }
     mini_printf("\n");
 }
+
+void print_map_cycle(flags_t *flags, unsigned char map[MEM_SIZE], int cycles)
+{
+    if (flags->dump == cycles) {
+        print_map(map);
+    }
+}

@@ -64,8 +64,8 @@ typedef struct arena_s {
     unsigned char arena[MEM_SIZE];
     champion_t champions[MAX_CHAMPIONS_AMT];
 } arena_t;
-int do_vm(flags_t *champions);
-void gameloop(unsigned char map[MEM_SIZE], champion_t **champ);
+int do_vm(flags_t *flags);
+void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ);
 
 // Instructions
 int instructions(unsigned char map[MEM_SIZE],
@@ -94,6 +94,7 @@ extern const inst_t do_inst[];
 
 //Utils
 void print_map(unsigned char map[MEM_SIZE]);
+void print_map_cycle(flags_t *flags, unsigned char map[MEM_SIZE], int cycles);
 int ltb_endian(int little);
 uint16_t ltb_endian_16(uint16_t little);
 args_type_t *byte_to_args(uint8_t byte);

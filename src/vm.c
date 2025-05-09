@@ -21,20 +21,20 @@ int add_to_map_and_champ(unsigned char map[MEM_SIZE],
     return 0;
 }
 
-int do_vm(flags_t *champions)
+int do_vm(flags_t *flags)
 {
-    unsigned char vm[MEM_SIZE];
+    unsigned char map[MEM_SIZE];
     int index = 0;
-    champion_t **champ = setup_champion(champions->champions_amt);
+    champion_t **champ = setup_champion(flags->champions_amt);
 
     for (int i = 0; i < MEM_SIZE; i++)
-        vm[i] = 0;
-    for (int i = 0; i < champions->champions_amt; i++) {
-        add_to_map_and_champ(vm, champions->champions[i], index, champ[i]);
-        index += MEM_SIZE / champions->champions_amt;
+        map[i] = 0;
+    for (int i = 0; i < flags->champions_amt; i++) {
+        add_to_map_and_champ(map, flags->champions[i], index, champ[i]);
+        index += MEM_SIZE / flags->champions_amt;
     }
-    gameloop(vm, champ);
-    print_map(vm);
+    gameloop(map, flags, champ);
+    print_map(map);
     free_champions(champ);
     return 0;
 }
