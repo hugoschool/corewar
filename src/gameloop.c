@@ -7,13 +7,16 @@
 
 #include "corewar.h"
 
-void update_champions(champion_t **champ)
+void update_champions_and_cycles(champion_t **champ, int *cycles,
+    int *d_cycles)
 {
     for (int i = 0; champ[i] != NULL; i++) {
         if (!champ[i]->alive)
             champ[i]->dead = true;
         champ[i]->alive = false;
     }
+    *cycles = 0;
+    (*d_cycles)++;
 }
 
 bool champs_alive(champion_t **champ)
@@ -68,11 +71,8 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
         for (int i = 0; champ[i] != NULL; i++)
             do_instructions(map, champ, i);
         print_map_cycle(flags, map, cycles);
-        if (cycles == CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)) {
-            cycles = 0;
-            delta_cycles++;
-            update_champions(champ);
-        }
+        if (cycles == CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA))
+            update_champions_and_cycles(champ, &cycles, &delta_cycles);
         if (delta_cycles == 40) {
             nb_delta++;
             delta_cycles = 0;
