@@ -64,6 +64,7 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
     int cycles = 0;
     int delta_cycles = 0;
     int nb_delta = 0;
+    int tot_cycles = 0;
 
     for (; true; cycles++) {
         if (!champs_alive(champ))
@@ -77,5 +78,7 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
             nb_delta++;
             delta_cycles = 0;
         }
+        tot_cycles++;
     }
+    mini_printf("Number of cycles: %d\n", tot_cycles);
 }
