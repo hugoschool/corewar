@@ -47,7 +47,7 @@ static int bit_xor(int value, int cur_val)
     return value ^ cur_val;
 }
 
-static void main_logic(unsigned char map[MEM_SIZE], champion_t *champ,
+static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
     int proc_index, int (*bit_operation)(int value, int cur_val))
 {
     int index = champ->procs[proc_index].index + 1;
@@ -72,18 +72,18 @@ static void main_logic(unsigned char map[MEM_SIZE], champion_t *champ,
 
 int do_and(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    main_logic(map, champ, proc_index, &bit_and);
+    binary_logic(map, champ, proc_index, &bit_and);
     return 0;
 }
 
 int do_or(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    main_logic(map, champ, proc_index, &bit_or);
+    binary_logic(map, champ, proc_index, &bit_or);
     return 0;
 }
 
 int do_xor(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    main_logic(map, champ, proc_index, &bit_xor);
+    binary_logic(map, champ, proc_index, &bit_xor);
     return 0;
 }
