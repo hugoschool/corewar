@@ -28,8 +28,8 @@ BINARY	=	corewar
 
 all:	$(RAYLIB) $(BINARY)
 
-$(BINARY):	$(OBJ)
-	$(CC) -o $(BINARY) $(OBJ) $(LDFLAGS) $(LDLIBS)
+$(BINARY):	$(INITOBJ) $(OBJ)
+	$(CC) -o $(BINARY) $(INITOBJ) $(OBJ) $(LDFLAGS) $(LDLIBS)
 
 $(RAYLIB):
 	curl -Lo $(RAYLIB_TAR) $(RAYLIB_LINK)
