@@ -4,6 +4,10 @@ corewar
 *.o
 *.out
 
+# Bonus
+bonus/*.tar.gz
+bonus/raylib*
+
 # Libs
 include/my.h
 
