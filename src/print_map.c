@@ -51,6 +51,8 @@ void print_map(unsigned char map[MEM_SIZE])
         print_hex(map[i]);
         if (map[i] != 0)
             mini_printf(ANSI_RESET);
+        if (i % 32 == 31)
+            mini_printf("\n");
     }
     mini_printf("\n");
 }
