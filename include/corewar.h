@@ -46,6 +46,8 @@ typedef struct {
     int index;
     int registers[REG_NUMBER];
     int cycles;
+    bool alive;
+    bool dead;
 } process_t;
 
 // Champions
