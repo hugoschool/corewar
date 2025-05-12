@@ -12,6 +12,11 @@ void update_champions_and_cycles(champion_t **champ, int *cycles)
     for (int i = 0; champ[i] != NULL; i++) {
         if (!champ[i]->alive)
             champ[i]->dead = true;
+        for (int j = 0; j < champ[i]->nb_procs; j++) {
+            champ[i]->procs[j].dead = champ[i]->procs[j].alive == true ?
+                false : true;
+            champ[i]->procs[j].alive = false;
+        }
         champ[i]->alive = false;
     }
     *cycles = 0;
