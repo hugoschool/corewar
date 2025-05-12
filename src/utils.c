@@ -21,17 +21,6 @@ int ltb_endian(int little)
     return result;
 }
 
-uint16_t ltb_endian_16(uint16_t little)
-{
-    uint16_t bits[2];
-    uint16_t result;
-
-    bits[0] = (little & 0x00ff) << 8;
-    bits[1] = (little & 0xff00) >> 8;
-    result = bits[0] | bits[1];
-    return result;
-}
-
 args_type_t *byte_to_args(uint8_t byte)
 {
     args_type_t *args = malloc(sizeof(args_type_t) * (sizeof(uint8_t) * 4));
@@ -52,4 +41,9 @@ int get_nb_bytes(args_type_t args)
     if (args == 3)
         return IND_SIZE;
     return 0;
+}
+
+int get_reg_index(unsigned char map_i)
+{
+    return map_i < REG_NUMBER ? map_i - 1 : 0;
 }
