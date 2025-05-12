@@ -32,7 +32,8 @@ int instructions(unsigned char map[MEM_SIZE], champion_t *champ,
             champ->procs[proc_index].index++;
             return 0;
         }
-        nb_player = do_inst[inst.code - 1](map, champ, proc_index);
+        if (!champ->procs[proc_index].dead)
+            nb_player = do_inst[inst.code - 1](map, champ, proc_index);
         champ->procs[proc_index].cycles = 0;
     } else
         champ->procs[proc_index].cycles += 1;

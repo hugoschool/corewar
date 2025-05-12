@@ -30,7 +30,8 @@ int do_st(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
         rep_map(champ->procs[proc_index].registers[map[index + 2] - 1],
             map, index + (val % IDX_MOD));
     }
-    champ->procs[proc_index].index += 7;
+    champ->procs[proc_index].index += 2 + get_nb_bytes(types[0]) +
+        get_nb_bytes(types[1]);
     free(types);
     return 0;
 }
