@@ -26,44 +26,37 @@ int get_value(unsigned char map[MEM_SIZE], process_t *proc, args_type_t type)
 
 int get_val_ind(unsigned char map[MEM_SIZE], int index)
 {
-    int val = (map[index] << 24) + (map[index + 1] << 16) +
-        (map[index + 2] << 8) + map[index];
-
-    return val;
+    return (map[index] << 24) + (map[index + 1] << 16) + (map[index + 2] << 8)
+        + map[index];
 }
 
-int do_ld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
+static void main_ld(unsigned char map[MEM_SIZE], champion_t *champ,
+    int proc_index, bool lldi)
 {
     int index = champ->procs[proc_index].index;
     args_type_t *types = byte_to_args(map[index + 1]);
     int val = get_value(map, &(champ->procs[proc_index]), types[0]);
 
     index = champ->procs[proc_index].index;
-    if (types[0] != 3) {
-        champ->procs[proc_index].registers[map[index] - 1] = val % IDX_MOD;
-    } else {
+    if (lldi)
+        val %= IDX_MOD;
+    if (types[0] != 3)
+        champ->procs[proc_index].registers[map[index] - 1] = val;
+    else
         champ->procs[proc_index].registers[map[index] - 1] = get_val_ind(map,
-            val % IDX_MOD);
-    }
+            val);
     champ->procs[proc_index].index += 1;
     free(types);
+}
+
+int do_ld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
+{
+    main_ld(map, champ, proc_index, false);
     return 0;
 }
 
 int do_lld(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 {
-    int index = champ->procs[proc_index].index;
-    args_type_t *types = byte_to_args(map[index]);
-    int val = get_value(map, &(champ->procs[proc_index]), types[0]);
-
-    index = champ->procs[proc_index].index;
-    if (types[0] != 3) {
-        champ->procs[proc_index].registers[map[index] - 1] = val;
-    } else {
-        champ->procs[proc_index].registers[map[index] - 1] =
-            get_val_ind(map, val);
-    }
-    champ->procs[proc_index].index += 1;
-    free(types);
+    main_ld(map, champ, proc_index, true);
     return 0;
 }
