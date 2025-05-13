@@ -46,6 +46,7 @@ typedef struct {
     int index;
     int registers[REG_NUMBER];
     int cycles;
+    bool carry;
     bool alive;
     bool dead;
 } process_t;

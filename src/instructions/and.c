@@ -54,7 +54,6 @@ static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
     args_type_t *types = byte_to_args(map[index]);
     int value = 0;
     int cur_val = 0;
-    int reg = 0;
 
     index++;
     for (int i = 0; i < 2; i++) {
@@ -66,8 +65,9 @@ static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
         else
             value = (*bit_operation)(value, cur_val);
     }
-    reg = get_reg_index(map[index]);
-    champ->procs[proc_index].registers[reg] = value;
+    champ->procs[proc_index].registers[get_reg_index(map[index])] = value;
+    champ->procs[proc_index].carry = champ->procs[proc_index]
+        .registers[get_reg_index(map[index])] == 0 ? 1 : 0;
     champ->procs[proc_index].index += index_nb_bytes(types);
     free(types);
 }
