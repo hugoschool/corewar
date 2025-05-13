@@ -44,8 +44,6 @@ bool champs_alive(champion_t **champ)
 
 void set_alive(champion_t **champs, int player_nb, int *nb_live)
 {
-    int t_live = *nb_live;
-
     for (int i = 0; champs[i] != NULL; i++) {
         if (!champs[i]->dead && champs[i]->nb_player == player_nb) {
             mini_printf("The player %d(%s) is alive.\n",
@@ -53,9 +51,6 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
             champs[i]->alive = true;
             (*nb_live) += 1;
         }
-    }
-    if (t_live != *nb_live) {
-        mini_printf("The player %d() is alive.\n", player_nb);
     }
 }
 
