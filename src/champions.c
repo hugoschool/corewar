@@ -42,6 +42,7 @@ champion_t **setup_champions(flags_t *flags)
         champ[i]->nb_procs = 1;
         champ[i]->procs[0].cycles = 0;
         champ[i]->procs[0].alive = false;
+        champ[i]->procs[0].carry = false;
         champ[i]->procs[0].dead = false;
         set_up_reg(&(champ[i]->procs[0]), i);
     }

@@ -46,6 +46,7 @@ typedef struct {
     int index;
     int registers[REG_NUMBER];
     int cycles;
+    bool carry;
     bool alive;
     bool dead;
 } process_t;
@@ -95,8 +96,10 @@ extern const inst_t do_inst[];
 void print_map(unsigned char map[MEM_SIZE]);
 void print_map_cycle(flags_t *flags, unsigned char map[MEM_SIZE], int cycles);
 int ltb_endian(int little);
-uint16_t ltb_endian_16(uint16_t little);
 args_type_t *byte_to_args(uint8_t byte);
 int get_nb_bytes(args_type_t args);
+int get_reg_index(unsigned char map_i);
+int get_inst_size(unsigned char coding_byte);
+
 
 #endif
