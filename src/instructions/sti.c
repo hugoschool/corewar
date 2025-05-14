@@ -35,14 +35,12 @@ int do_sti(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     int targ2 = get_len(map, &(champ->procs[proc_index]), params[2],
         &count_bytes);
     int where = targ1 + targ2 + index;
-    uint8_t replace[4] = {
-        champ->procs[proc_index].registers[map[index + 2] - 1] << 24,
-        champ->procs[proc_index].registers[map[index + 2] - 1] << 16,
-        champ->procs[proc_index].registers[map[index + 2] - 1] << 8,
-        champ->procs[proc_index].registers[map[index + 2] - 1] << 0};
+    int reg = champ->procs[proc_index].registers
+        [get_reg_index(map[index + 2])];
+    uint8_t replace[4] = {reg << 24, reg << 16, reg << 8, reg << 0};
 
     for (int i = 0; i < 4; i++)
-        map[where + i] = replace[i];
+        map[(where + i) % MEM_SIZE] = replace[i];
     champ->procs[proc_index].index += count_bytes + 1;
     free(params);
     return 0;

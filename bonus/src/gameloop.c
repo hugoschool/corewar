@@ -5,7 +5,12 @@
 ** gameloop.c
 */
 
+#include "bonus.h"
 #include "corewar.h"
+#include "raylib.h"
+
+#define INIT_X 5
+#define INIT_Y 10
 
 void update_champions_and_cycles(champion_t **champ, int *cycles)
 {
@@ -66,26 +71,62 @@ void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
         }
 }
 
-void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
+void run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
 {
     int cycles = 0;
     int nb_delta = 0;
     int tot_cycles = 0;
     int nb_live = 0;
 
-    for (; true; cycles++) {
-        if (!champs_alive(champ))
-            break;
-        for (int i = 0; champ[i] != NULL; i++)
-            do_instructions(map, champ, i, &nb_live);
-        print_map_cycle(flags, map, cycles);
-        if (nb_live >= NBR_LIVE) {
-            nb_delta++;
-            nb_live = 0;
-        }
-        if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
-            update_champions_and_cycles(champ, &cycles);
-        tot_cycles++;
+    if (!champs_alive(champ))
+        return;
+    for (int i = 0; champ[i] != NULL; i++)
+        do_instructions(map, champ, i, &nb_live);
+    print_map_cycle(flags, map, cycles);
+    if (nb_live >= NBR_LIVE) {
+        nb_delta++;
+        nb_live = 0;
     }
-    mini_printf("Number of cycles: %d\n", tot_cycles);
+    if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
+        update_champions_and_cycles(champ, &cycles);
+    tot_cycles++;
+}
+
+void display_map(unsigned char map[MEM_SIZE], const int screenWidth)
+{
+    char buf[3] = "";
+    Color text_color = RAYWHITE;
+    int x = INIT_X;
+    int y = INIT_Y;
+
+    for (int i = 0; i < MEM_SIZE; i++, x+=5) {
+        if (x >= screenWidth - (INIT_X * 5)) {
+            x = INIT_X;
+            y += 15;
+        }
+        text_color = RAYWHITE;
+        if (map[i] > 0)
+            text_color = RED;
+        snprintf(buf, 3, "%02X", map[i]);
+        DrawText(buf, x, y, FONT_SIZE, text_color);
+    }
+}
+
+void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
+{
+    const int screenWidth = 1920;
+    const int screenHeight = 1080;
+
+
+    InitWindow(screenWidth, screenHeight, "Corewar");
+    SetTargetFPS(60);
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(BLACK);
+        display_map(map, screenWidth);
+        run_one_cycle(map, flags, champ);
+        EndDrawing();
+    }
+    CloseWindow();
+    return;
 }

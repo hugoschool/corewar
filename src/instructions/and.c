@@ -65,7 +65,9 @@ static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
         else
             value = (*bit_operation)(value, cur_val);
     }
-    champ->procs[proc_index].registers[map[index] - 1] = value;
+    champ->procs[proc_index].registers[get_reg_index(map[index])] = value;
+    champ->procs[proc_index].carry = champ->procs[proc_index]
+        .registers[get_reg_index(map[index])] == 0 ? 1 : 0;
     champ->procs[proc_index].index += index_nb_bytes(types);
     free(types);
 }
