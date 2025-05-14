@@ -47,3 +47,15 @@ int get_reg_index(unsigned char map_i)
 {
     return map_i < REG_NUMBER ? map_i - 1 : 0;
 }
+
+int get_inst_size(unsigned char coding_byte)
+{
+    args_type_t *types = byte_to_args(coding_byte);
+    int size = 2;
+
+    for (int i = 0; i < 4; i++) {
+        size += get_nb_bytes(types[i]);
+    }
+    free(types);
+    return size;
+}
