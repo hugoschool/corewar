@@ -5,20 +5,37 @@
 ## Makefile
 ##
 
-# Uncomment this when needed to import the current corewar files to import
-# into the bonus
-# INITSRC_DIR	=	../src
-# INITSRC	=	$(INITSRC_DIR)/op.c
-# INITOBJ	=	$(INITSRC:.c=.o)
+INITSRC_DIR	=	../src
+INITSRC	=	$(INITSRC_DIR)/op.c \
+			$(INITSRC_DIR)/champions.c \
+			$(INITSRC_DIR)/flags.c \
+			$(INITSRC_DIR)/vm.c \
+			$(INITSRC_DIR)/instructions/live.c \
+			$(INITSRC_DIR)/instructions/instructions.c \
+			$(INITSRC_DIR)/instructions/add.c \
+			$(INITSRC_DIR)/instructions/aff.c \
+			$(INITSRC_DIR)/instructions/and.c \
+			$(INITSRC_DIR)/instructions/fork.c \
+			$(INITSRC_DIR)/instructions/ld.c \
+			$(INITSRC_DIR)/instructions/ldi.c \
+			$(INITSRC_DIR)/instructions/st.c \
+			$(INITSRC_DIR)/instructions/sti.c \
+			$(INITSRC_DIR)/instructions/zjump.c \
+			$(INITSRC_DIR)/instructions/inst_list.c \
+			$(INITSRC_DIR)/print_map.c \
+			$(INITSRC_DIR)/utils.c
 
-SRC	=	src/main.c
+SRC	=	$(INITSRC) \
+		src/main.c \
+		src/gameloop.c
+
 OBJ	=	$(SRC:.c=.o)
 
 CC	?=	gcc
 CFLAGS	=	-Wall -Wextra
-CPPFLAGS	=	-I ./include/ -I ./$(RAYLIB)/include
-LDFLAGS	=	-L ./$(RAYLIB)/lib
-LDLIBS	=	-l:libraylib.a -lm
+CPPFLAGS	=	-I ./include/ -I ./$(RAYLIB)/include -I ../include/
+LDFLAGS	=	-L ./$(RAYLIB)/lib -L ../lib/my
+LDLIBS	=	-l:libraylib.a -lm -lmy
 
 RAYLIB	=	raylib-5.5_linux_amd64
 RAYLIB_TAR	=	$(RAYLIB).tar.gz
