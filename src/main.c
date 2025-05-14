@@ -29,6 +29,7 @@ static int print_help(void)
 int main(int argc, char **argv)
 {
     flags_t *flags = NULL;
+    int return_value = 0;
 
     if (argc < 2)
         return 84;
@@ -37,7 +38,8 @@ int main(int argc, char **argv)
     flags = parse_flags(argc, argv);
     if (!flags)
         return 84;
-    do_vm(flags);
+    if (do_vm(flags) == 84)
+        return_value = 84;
     free_flags(flags);
-    return 0;
+    return return_value;
 }
