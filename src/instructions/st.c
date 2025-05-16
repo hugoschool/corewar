@@ -22,7 +22,7 @@ int do_st(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     int val = 0;
 
     if (types[1] == 1) {
-        val = champ->procs->registers[map[index + 2] - 1];
+        val = champ->procs[proc_index].registers[map[index + 2] - 1];
         champ->procs[proc_index].registers[map[index + 3] - 1] = val;
     }
     if (types[1] == 3) {
