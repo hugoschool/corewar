@@ -27,7 +27,8 @@ INITSRC	=	$(INITSRC_DIR)/op.c \
 
 SRC	=	$(INITSRC) \
 		src/main.c \
-		src/gameloop.c
+		src/gameloop.c \
+		src/display.c
 
 OBJ	=	$(SRC:.c=.o)
 
