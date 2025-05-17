@@ -6,12 +6,10 @@
 */
 
 #include "corewar.h"
-#include "../include/bonus.h"
+#include "bonus.h"
 #include "raylib.h"
 
-
-
-void dispay_player(champion_t **champs, int cycles)
+void display_player(champion_t **champs, int cycles)
 {
     int disp = 10;
     char proc[100];
@@ -30,7 +28,7 @@ void dispay_player(champion_t **champs, int cycles)
         disp += SCREEN_WIDTH / 4;
     }
     sprintf(proc, "Total Cycles: %d", cycles);
-    DrawText(proc, 20, SCREEN_HIGHT / 3 - 20, 20, RAYWHITE);
+    DrawText(proc, 20, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
 }
 
 void display_end(champion_t **champ, int cycles)
@@ -43,8 +41,8 @@ void display_end(champion_t **champ, int cycles)
             nb_winner = i;
     }
     sprintf(winner, "The Winner is player n°%d(%s)", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name);
-    DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HIGHT / 2 - 70, 70, YELLOW);
-    DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HIGHT / 1.5, 20, RAYWHITE);
+    DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HEIGHT / 2 - 70, 70, YELLOW);
+    DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5, 20, RAYWHITE);
 }
 
 void display_player_index(champion_t **champ, map_t *map)

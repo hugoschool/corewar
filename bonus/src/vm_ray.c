@@ -6,7 +6,7 @@
 */
 
 #include "corewar.h"
-#include "../include/bonus.h"
+#include "bonus.h"
 #include "raylib.h"
 
 bool add_to_map_and_champ(map_t *map,

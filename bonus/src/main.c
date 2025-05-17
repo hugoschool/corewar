@@ -7,7 +7,7 @@
 
 #include "corewar.h"
 #include "raylib.h"
-#include "../include/bonus.h"
+#include "bonus.h"
 
 static int print_help(void)
 {

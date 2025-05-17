@@ -5,13 +5,10 @@
 ** gameloop.c
 */
 
-#include "../include/bonus.h"
+#include "bonus.h"
 #include "corewar.h"
 #include "raylib.h"
 #define _GNU_SOURCE
-
-#define INIT_X 5
-#define INIT_Y 1080 / 3
 
 void update_champions_and_cycles(champion_t **champ, int *cycles)
 {
@@ -106,9 +103,9 @@ bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cha
     }
     if (*screen == GAMEPLAY) {
         sprintf(lives, "Lives: %d / 40", nb_live);
-        DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HIGHT / 3 - 20, 20, RAYWHITE);
+        DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
         sprintf(nb_cycles, "Cycles: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
-        DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HIGHT / 3 - 20, 20 , RAYWHITE);
+        DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 3 - 20, 20 , RAYWHITE);
     }
     return false;
 }
@@ -119,7 +116,7 @@ void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycl
     int x = INIT_X;
     int y = INIT_Y;
 
-    dispay_player(champ, cycles);
+    display_player(champ, cycles);
     display_player_index(champ, map);
     for (int i = 0; i < MEM_SIZE; i++, x+= 20) {
         if (x >= screenWidth - (INIT_X * 2)) {
@@ -141,10 +138,10 @@ void display_logo(champion_t **champ, Texture2D space)
     int y = 0;
 
     DrawTexture(space, 0, 0, WHITE);
-    DrawText("The Core War", SCREEN_WIDTH / 3, SCREEN_HIGHT / 3, 60, YELLOW);
+    DrawText("The Core War", SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 60, YELLOW);
     for (int i = 0; champ[i] != NULL; i++) {
         sprintf(pres, "Player:%i name:%s comment:%s", champ[i]->nb_player, champ[i]->header.prog_name, champ[i]->header.comment);
-        DrawText(pres, SCREEN_WIDTH / 4, SCREEN_HIGHT / 2 + y, 30, RED);
+        DrawText(pres, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 + y, 30, RED);
         y += 40;
     }
     DrawText("Press 'space' to start", 10, 10 , 30, WHITE);
@@ -155,7 +152,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     int pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
-    InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Corewar");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
     bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
