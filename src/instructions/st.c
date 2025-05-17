@@ -21,11 +21,12 @@ int do_st(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
     args_type_t *types = byte_to_args(map[index + 1]);
     int val = 0;
 
-    if (types[1] == 1) {
-        val = champ->procs->registers[map[index + 2] - 1];
+    if (types[1] == 1 && map[index + 2] <= REG_NUMBER && map[index + 2] > 0 &&
+        map[index + 3] <= REG_NUMBER && map[index + 3] > 0) {
+        val = champ->procs[proc_index].registers[map[index + 2] - 1];
         champ->procs[proc_index].registers[map[index + 3] - 1] = val;
     }
-    if (types[1] == 3) {
+    if (types[1] == 3 && map[index + 2] <= REG_NUMBER && map[index + 2] > 0) {
         val = (map[index + 3] << 8) + map[index + 4];
         rep_map(champ->procs[proc_index].registers[map[index + 2] - 1],
             map, index + (val % IDX_MOD));

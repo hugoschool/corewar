@@ -20,6 +20,7 @@ static int16_t create_new_proc(unsigned char map[MEM_SIZE], champion_t *champ,
     champ->procs[champ->nb_procs - 1].cycles = 0;
     champ->procs[champ->nb_procs - 1].index = champ->procs[p_index].index;
     champ->procs[champ->nb_procs - 1].alive = false;
+    champ->procs[champ->nb_procs - 1].carry = false;
     champ->procs[champ->nb_procs - 1].dead = false;
     for (int i = 0; i < REG_NUMBER; i++) {
         champ->procs[champ->nb_procs - 1].registers[i] =
