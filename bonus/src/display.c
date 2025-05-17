@@ -26,7 +26,7 @@ void dispay_player(champion_t **champs, int cycles)
         if (!(champs[i]->alive) && champs[i]->dead)
             DrawRectangle(disp + 120, 80, 40, 40, RED);
         sprintf(proc, "nb of process: %d", champs[i]->nb_procs);
-        DrawText(proc, disp, 120, 20, RAYWHITE);
+        DrawText(TextFormat("nb of process: %d", champs[i]->nb_procs), disp, 120, 20, RAYWHITE);
         disp += SCREEN_WIDTH / 4;
     }
     sprintf(proc, "Total Cycles: %d", cycles);
@@ -43,7 +43,16 @@ void display_end(champion_t **champ, int cycles)
             nb_winner = i;
     }
     sprintf(winner, "The Winner is player n°%d(%s)", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name);
-    DrawText(winner, SCREEN_WIDTH / 3 - 140, SCREEN_HIGHT / 2 - 70, 70, YELLOW);
-    sprintf(winner, "Total cycles: %d", cycles);
-    DrawText(winner, SCREEN_WIDTH / 3, SCREEN_HIGHT / 1.5, 20, RAYWHITE);
+    DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HIGHT / 2 - 70, 70, YELLOW);
+    DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HIGHT / 1.5, 20, RAYWHITE);
+}
+
+void display_player_index(champion_t **champ, map_t *map)
+{
+    for (int i = 0; champ[i] != NULL; i++) {
+        for (int j = 0; j < champ[i]->nb_procs; j++) {
+            if (!champ[i]->dead && !champ[i]->procs[j].dead)
+                map->is_index[champ[i]->procs[i].index] = true;
+        }
+    }
 }

@@ -37,7 +37,7 @@ champion_t **setup_champions(flags_t *flags)
         champ[i]->procs = malloc(sizeof(process_t));
         champ_i = update_nb_player(champ[i], flags->champions[i].prog_number,
             champ_i);
-        champ[i]->alive = true;
+        champ[i]->alive = false;
         champ[i]->dead = false;
         champ[i]->nb_procs = 1;
         champ[i]->procs[0].cycles = 0;

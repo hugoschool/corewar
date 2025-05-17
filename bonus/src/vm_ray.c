@@ -7,8 +7,9 @@
 
 #include "corewar.h"
 #include "../include/bonus.h"
+#include "raylib.h"
 
-bool add_to_map_and_champ(unsigned char map[MEM_SIZE],
+bool add_to_map_and_champ(map_t *map,
     flag_prog_t champ, int index, champion_t *champion)
 {
     struct stat info;
@@ -23,28 +24,35 @@ bool add_to_map_and_champ(unsigned char map[MEM_SIZE],
         champion->procs[0].index = champ.load_address % MEM_SIZE;
     else
         champion->procs[0].index = index;
-    fread(&map[champion->procs[0].index], sizeof(char),
+    fread(&(map->byte[champion->procs[0].index]), sizeof(char),
         info.st_size - sizeof(header_t), champ.fp);
+    for (uint64_t i = champion->procs[0].index; i <
+    champion->procs[0].index + info.st_size - sizeof(header_t); i++) {
+        map->color[i] = colors[(champion->nb_player % 4) - 1];
+        map->is_index[i] = false;
+   }
     return true;
 }
 
 int do_vm_ray(flags_t *flags)
 {
-    unsigned char map[MEM_SIZE];
+    map_t map;
     int index = 0;
     champion_t **champ = setup_champions(flags);
 
-    for (int i = 0; i < MEM_SIZE; i++)
-        map[i] = 0;
+    for (int i = 0; i < MEM_SIZE; i++) {
+        map.byte[i] = 0;
+        map.color[i] = RAYWHITE;
+    }
     for (int i = 0; i < flags->champions_amt; i++) {
-        if (!add_to_map_and_champ(map, flags->champions[i], index, champ[i])) {
+        if (!add_to_map_and_champ(&map, flags->champions[i], index, champ[i])) {
             free_champions(champ);
             return 84;
         }
         index += MEM_SIZE / flags->champions_amt;
     }
-    gameloop_ray(map, flags, champ);
-    print_map(map);
+    gameloop_ray(&map, flags, champ);
+    print_map(map.byte);
     free_champions(champ);
     return 0;
 }

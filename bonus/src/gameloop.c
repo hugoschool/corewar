@@ -41,11 +41,12 @@ bool champs_alive(champion_t **champ, GameScreen *screen)
     }
     if (alive > 1)
         return true;
-    for (int i = 0; champ[i] != NULL; i++)
+    for (int i = 0; champ[i] != NULL; i++) {
         if (champ[i]->nb_player == nb_last) {
             mini_printf("The player %d(%s) has won.\n",
-                champ[i]->nb_player, champ[i]->header.prog_name);
-            }
+            champ[i]->nb_player, champ[i]->header.prog_name);
+        }
+    }
     *screen = ENDING;
     return false;
 }
@@ -74,53 +75,62 @@ void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
         }
 }
 
-bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen)
+void set_pause(int *pause)
+{
+    if (IsKeyPressed(KEY_SPACE))
+    (*pause)++;
+}
+
+bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, int *pause)
 {
     static int cycles = 0;
     static int nb_delta = 0;
     static int nb_live = 0;
+    char lives[24];
+    char nb_cycles[34];
 
-    if (!champs_alive(champ, screen))
-        return true;
-    for (int i = 0; champ[i] != NULL; i++)
-        do_instructions(map, champ, i, &nb_live);
-    print_map_cycle(flags, map, cycles);
-    if (nb_live >= NBR_LIVE) {
-        nb_delta++;
-        nb_live = 0;
+    if (*pause % 2 != 0 && *screen != ENDING) {
+        if (!champs_alive(champ, screen))
+            return true;
+        for (int i = 0; champ[i] != NULL; i++)
+            do_instructions(map, champ, i, &nb_live);
+        print_map_cycle(flags, map, cycles);
+        if (nb_live >= NBR_LIVE) {
+            nb_delta++;
+            nb_live = 0;
+        }
+        if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
+            update_champions_and_cycles(champ, &cycles);
+        cycles++;
+        (*tot_cycles)++;
     }
-    if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
-        update_champions_and_cycles(champ, &cycles);
-    cycles++;
-    (*tot_cycles)++;
+    sprintf(lives, "Lives: %d / 40", nb_live);
+    DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HIGHT / 3 - 20, 20, RAYWHITE);
+    sprintf(nb_cycles, "Cycles: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
+    DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HIGHT / 3 - 20, 20 , RAYWHITE);
     return false;
 }
 
-void display_map(unsigned char map[MEM_SIZE], const int screenWidth, champion_t **champ, int cycles)
+void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycles)
 {
     char buf[3] = "";
-    Color text_color = RAYWHITE;
     int x = INIT_X;
     int y = INIT_Y;
 
     dispay_player(champ, cycles);
+    display_player_index(champ, map);
     for (int i = 0; i < MEM_SIZE; i++, x+= 20) {
         if (x >= screenWidth - (INIT_X * 2)) {
             x = INIT_X;
             y += 10;
         }
-        text_color = RAYWHITE;
-        if (map[i] > 0)
-            text_color = RED;
-        snprintf(buf, 3, "%02X", map[i]);
-        DrawText(buf, x, y, FONT_SIZE, text_color);
+        if (map->is_index[i]) {
+            DrawRectangle(x, y, 11, 11, GRAY);
+            map->is_index[i] = false;
+        }
+        snprintf(buf, 3, "%02X", map->byte[i]);
+        DrawText(buf, x, y, FONT_SIZE, map->color[i]);
     }
-}
-
-void set_pause(int *pause)
-{
-    if (IsKeyPressed(KEY_SPACE))
-    (*pause)++;
 }
 
 void display_logo(champion_t **champ, Texture2D space)
@@ -138,7 +148,7 @@ void display_logo(champion_t **champ, Texture2D space)
     DrawText("Press 'space' to start", 10, 10 , 30, WHITE);
 }
 
-void gameloop_ray(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
+void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
 {
     int pause = 0;
     GameScreen screen = LOGO;
@@ -162,8 +172,7 @@ void gameloop_ray(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cham
         if (screen == ENDING)
             display_end(champ, cycles);
         EndDrawing();
-        if (pause % 2 != 0 && screen != ENDING)
-            ended = run_one_cycle(map, flags, champ, &cycles, &screen);
+        ended = run_one_cycle(map->byte, flags, champ, &cycles, &screen, &pause);
     }
     UnloadImage(space_i);
     UnloadTexture(space_t);
