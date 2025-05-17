@@ -74,14 +74,14 @@ void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
         }
 }
 
-void run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen)
+bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen)
 {
     static int cycles = 0;
     static int nb_delta = 0;
     static int nb_live = 0;
 
     if (!champs_alive(champ, screen))
-        return;
+        return true;
     for (int i = 0; champ[i] != NULL; i++)
         do_instructions(map, champ, i, &nb_live);
     print_map_cycle(flags, map, cycles);
@@ -93,6 +93,7 @@ void run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cha
         update_champions_and_cycles(champ, &cycles);
     cycles++;
     (*tot_cycles)++;
+    return false;
 }
 
 void display_map(unsigned char map[MEM_SIZE], const int screenWidth, champion_t **champ, int cycles)
@@ -142,14 +143,15 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
     int pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
-
+    bool ended = false;
     InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Corewar");
     SetTargetFPS(120);
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
+
     while (!WindowShouldClose()) {
         set_pause(&pause);
-        if (pause == 1)
+        if (pause == 1 && !ended)
             screen = GAMEPLAY;
         BeginDrawing();
         ClearBackground(BLACK);
@@ -161,7 +163,7 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
             display_end(champ, cycles);
         EndDrawing();
         if (pause % 2 != 0 && screen != ENDING)
-            run_one_cycle(map, flags, champ, &cycles, &screen);
+            ended = run_one_cycle(map, flags, champ, &cycles, &screen);
     }
     CloseWindow();
     UnloadImage(space_i);
