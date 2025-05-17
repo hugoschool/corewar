@@ -9,7 +9,6 @@ INITSRC_DIR	=	../src
 INITSRC	=	$(INITSRC_DIR)/op.c \
 			$(INITSRC_DIR)/champions.c \
 			$(INITSRC_DIR)/flags.c \
-			$(INITSRC_DIR)/vm.c \
 			$(INITSRC_DIR)/instructions/live.c \
 			$(INITSRC_DIR)/instructions/instructions.c \
 			$(INITSRC_DIR)/instructions/add.c \
@@ -28,7 +27,8 @@ INITSRC	=	$(INITSRC_DIR)/op.c \
 SRC	=	$(INITSRC) \
 		src/main.c \
 		src/gameloop.c \
-		src/display.c
+		src/display.c \
+		src/vm_ray.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -37,6 +37,10 @@ CFLAGS	=	-Wall -Wextra
 CPPFLAGS	=	-I ./include/ -I ./$(RAYLIB)/include -I ../include/
 LDFLAGS	=	-L ./$(RAYLIB)/lib -L ../lib/my
 LDLIBS	=	-l:libraylib.a -lm -lmy
+
+ifeq ($(ENV), dev)
+	CFLAGS	+=	-g3
+endif
 
 RAYLIB	=	raylib-5.5_linux_amd64
 RAYLIB_TAR	=	$(RAYLIB).tar.gz

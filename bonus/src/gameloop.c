@@ -138,16 +138,16 @@ void display_logo(champion_t **champ, Texture2D space)
     DrawText("Press 'space' to start", 10, 10 , 30, WHITE);
 }
 
-void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
+void gameloop_ray(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
 {
     int pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
-    bool ended = false;
     InitWindow(SCREEN_WIDTH, SCREEN_HIGHT, "Corewar");
-    SetTargetFPS(120);
+    bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
+    SetTargetFPS(120);
 
     while (!WindowShouldClose()) {
         set_pause(&pause);
@@ -165,8 +165,8 @@ void gameloop(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ)
         if (pause % 2 != 0 && screen != ENDING)
             ended = run_one_cycle(map, flags, champ, &cycles, &screen);
     }
-    CloseWindow();
     UnloadImage(space_i);
     UnloadTexture(space_t);
+    CloseWindow();
     return;
 }

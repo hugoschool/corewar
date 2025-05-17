@@ -7,6 +7,7 @@
 
 #include "corewar.h"
 #include "raylib.h"
+#include "../include/bonus.h"
 
 static int print_help(void)
 {
@@ -39,7 +40,7 @@ int main(int argc, char **argv)
     flags = parse_flags(argc, argv);
     if (!flags)
         return 84;
-    if (do_vm(flags) == 84)
+    if (do_vm_ray(flags) == 84)
         return_value = 84;
     free_flags(flags);
     return return_value;
