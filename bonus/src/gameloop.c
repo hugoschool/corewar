@@ -104,10 +104,12 @@ bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cha
         cycles++;
         (*tot_cycles)++;
     }
-    sprintf(lives, "Lives: %d / 40", nb_live);
-    DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HIGHT / 3 - 20, 20, RAYWHITE);
-    sprintf(nb_cycles, "Cycles: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
-    DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HIGHT / 3 - 20, 20 , RAYWHITE);
+    if (*screen == GAMEPLAY) {
+        sprintf(lives, "Lives: %d / 40", nb_live);
+        DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HIGHT / 3 - 20, 20, RAYWHITE);
+        sprintf(nb_cycles, "Cycles: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
+        DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HIGHT / 3 - 20, 20 , RAYWHITE);
+    }
     return false;
 }
 
@@ -161,7 +163,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
 
     while (!WindowShouldClose()) {
         set_pause(&pause);
-        if (pause == 1 && !ended)
+        if (pause == 1 && screen != ENDING)
             screen = GAMEPLAY;
         BeginDrawing();
         ClearBackground(BLACK);
@@ -171,8 +173,8 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
             display_map(map, SCREEN_WIDTH, champ, cycles);
         if (screen == ENDING)
             display_end(champ, cycles);
-        EndDrawing();
         ended = run_one_cycle(map->byte, flags, champ, &cycles, &screen, &pause);
+        EndDrawing();
     }
     UnloadImage(space_i);
     UnloadTexture(space_t);
