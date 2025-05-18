@@ -29,7 +29,10 @@ SRC	=	$(INITSRC) \
 		src/gameloop.c \
 		src/display.c \
 		src/vm_ray.c \
-		src/colors.c
+		src/colors.c \
+		src/inst_ray.c \
+		src/sti_ray.c \
+		src/st_ray.c
 
 OBJ	=	$(SRC:.c=.o)
 

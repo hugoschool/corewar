@@ -60,14 +60,14 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
     }
 }
 
-void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
+void do_instructions(map_t *map, champion_t **champs,
     int index, int *nb_live)
 {
     int nb_player = 0;
 
     for (int i = 0; i < champs[index]->nb_procs; i++)
         if (!champs[index]->dead) {
-            nb_player = instructions(map, champs[index], i);
+            nb_player = inst_ray(map, champs[index], i);
             set_alive(champs, nb_player, nb_live);
         }
 }
@@ -79,7 +79,7 @@ bool set_pause(bool pause)
     return pause;
 }
 
-bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause)
+bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause)
 {
     static int cycles = 0;
     static int nb_delta = 0;
@@ -92,7 +92,7 @@ bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cha
             return true;
         for (int i = 0; champ[i] != NULL; i++)
             do_instructions(map, champ, i, &nb_live);
-        print_map_cycle(flags, map, cycles);
+        print_map_cycle(flags, map->byte, cycles);
         if (nb_live >= NBR_LIVE) {
             nb_delta++;
             nb_live = 0;
@@ -171,7 +171,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
             display_map(map, SCREEN_WIDTH, champ, cycles);
         if (screen == ENDING)
             display_end(champ, cycles);
-        ended = run_one_cycle(map->byte, flags, champ, &cycles, &screen, pause);
+        ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause);
         EndDrawing();
     }
     UnloadImage(space_i);
