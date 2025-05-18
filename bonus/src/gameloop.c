@@ -142,7 +142,7 @@ void display_logo(champion_t **champ, Texture2D space)
     DrawText("The Core War", SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 60, YELLOW);
     for (int i = 0; champ[i] != NULL; i++) {
         sprintf(pres, "Player:%i name:%s comment:%s", champ[i]->nb_player, champ[i]->header.prog_name, champ[i]->header.comment);
-        DrawText(pres, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 + y, 30, RED);
+        DrawText(pres, SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 + y, 30, get_champ_color(champ[i]));
         y += 40;
     }
     DrawText("Press 'space' to start", 10, 10 , 30, WHITE);
