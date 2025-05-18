@@ -72,13 +72,14 @@ void do_instructions(unsigned char map[MEM_SIZE], champion_t **champs,
         }
 }
 
-void set_pause(int *pause)
+bool set_pause(bool pause)
 {
     if (IsKeyPressed(KEY_SPACE))
-    (*pause)++;
+        pause = !pause;
+    return pause;
 }
 
-bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, int *pause)
+bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause)
 {
     static int cycles = 0;
     static int nb_delta = 0;
@@ -86,7 +87,7 @@ bool run_one_cycle(unsigned char map[MEM_SIZE], flags_t *flags, champion_t **cha
     char lives[24];
     char nb_cycles[34];
 
-    if (*pause % 2 != 0 && *screen != ENDING) {
+    if (pause == true && *screen != ENDING) {
         if (!champs_alive(champ, screen))
             return true;
         for (int i = 0; champ[i] != NULL; i++)
@@ -149,7 +150,7 @@ void display_logo(champion_t **champ, Texture2D space)
 
 void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
 {
-    int pause = 0;
+    bool pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
@@ -159,7 +160,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     SetTargetFPS(120);
 
     while (!WindowShouldClose()) {
-        set_pause(&pause);
+        pause = set_pause(pause);
         if (pause == 1 && screen != ENDING)
             screen = GAMEPLAY;
         BeginDrawing();
@@ -170,7 +171,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
             display_map(map, SCREEN_WIDTH, champ, cycles);
         if (screen == ENDING)
             display_end(champ, cycles);
-        ended = run_one_cycle(map->byte, flags, champ, &cycles, &screen, &pause);
+        ended = run_one_cycle(map->byte, flags, champ, &cycles, &screen, pause);
         EndDrawing();
     }
     UnloadImage(space_i);
