@@ -41,7 +41,7 @@ void display_player_index(champion_t **champ, map_t *map);
 // VM
 int do_vm_ray(flags_t *flags);
 void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
-int inst_ray(map_t *map, champion_t *champ, int proc_index);
+int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed);
 int sti_ray(map_t *map, champion_t *champ, int proc_index);
 int st_ray(map_t *map, champion_t *champ, int proc_index);
 

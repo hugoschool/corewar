@@ -61,13 +61,13 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
 }
 
 void do_instructions(map_t *map, champion_t **champs,
-    int index, int *nb_live)
+    int index, int *nb_live, float speed)
 {
     int nb_player = 0;
 
     for (int i = 0; i < champs[index]->nb_procs; i++)
         if (!champs[index]->dead) {
-            nb_player = inst_ray(map, champs[index], i);
+            nb_player = inst_ray(map, champs[index], i, speed);
             set_alive(champs, nb_player, nb_live);
         }
 }
@@ -86,12 +86,13 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
     static int nb_live = 0;
     char lives[24];
     char nb_cycles[34];
+    static float speed = 1.0;
 
     if (pause == true && *screen != ENDING) {
         if (!champs_alive(champ, screen))
             return true;
         for (int i = 0; champ[i] != NULL; i++)
-            do_instructions(map, champ, i, &nb_live);
+            do_instructions(map, champ, i, &nb_live, speed);
         print_map_cycle(flags, map->byte, cycles);
         if (nb_live >= NBR_LIVE) {
             nb_delta++;
@@ -99,9 +100,13 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
         }
         if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
             update_champions_and_cycles(champ, &cycles);
-        cycles++;
-        (*tot_cycles)++;
+        cycles += (int)speed;
+        (*tot_cycles) += (int)speed;
     }
+    if (IsKeyPressed(KEY_DOWN))
+        speed /= 1.5;
+    if (IsKeyPressed(KEY_UP))
+        speed *= 1.5;
     if (*screen == GAMEPLAY) {
         sprintf(lives, "Lives: %d / 40", nb_live);
         DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);

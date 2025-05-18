@@ -21,7 +21,7 @@ op_t get_instruction_ray(unsigned char map[MEM_SIZE], int index)
     return op_tab[i];
 }
 
-int inst_ray(map_t *map, champion_t *champ, int proc_index)
+int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed)
 {
     op_t inst = get_instruction_ray(map->byte, champ->procs[proc_index].index);
     int nb_player = 0;
@@ -43,6 +43,6 @@ int inst_ray(map_t *map, champion_t *champ, int proc_index)
         }
         champ->procs[proc_index].cycles = 0;
     } else
-        champ->procs[proc_index].cycles += 1;
+        champ->procs[proc_index].cycles += (int)speed;
     return nb_player;
 }
