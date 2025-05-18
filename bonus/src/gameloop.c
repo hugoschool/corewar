@@ -157,7 +157,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
-    SetTargetFPS(120);
+    SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
         pause = set_pause(pause);
