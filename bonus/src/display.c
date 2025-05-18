@@ -32,15 +32,21 @@ void display_player(champion_t **champs, int cycles)
     DrawText(proc, 20, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
 }
 
-void display_end(champion_t **champ, int cycles)
+void display_end(champion_t **champ, int cycles, Texture2D skid)
 {
     char winner[PROG_NAME_LENGTH + 40];
     int nb_winner = 0;
+    static float scrolling = 0.0f;
 
+    scrolling -= 0.5f;
+    if (scrolling <= -skid.width*2)
+        scrolling = 0;
     for (int i = 0; champ[i] != 0; i++) {
         if (champ[i]->alive)
             nb_winner = i;
     }
+    DrawTextureEx(skid, (Vector2){scrolling, 20}, 0.0f, 2.0f, WHITE);
+    DrawTextureEx(skid, (Vector2){skid.width*2 + scrolling, 20}, 0.0f, 2.0f, WHITE);
     sprintf(winner, "The Winner is player n°%d(%s)", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name);
     DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HEIGHT / 2 - 70, 70, YELLOW);
     DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5, 20, RAYWHITE);

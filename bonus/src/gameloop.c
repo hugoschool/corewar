@@ -143,8 +143,13 @@ void display_logo(champion_t **champ, Texture2D space)
 {
     char pres[COMMENT_LENGTH * 2 + PROG_NAME_LENGTH];
     int y = 0;
+    static float scroll = 0.0f;
 
-    DrawTexture(space, 0, 0, WHITE);
+    scroll -= 0.5f;
+    if (scroll <= -space.width*2)
+        scroll = 0;
+    DrawTextureEx(space, (Vector2){scroll, 0}, 0.0f, 2.0f, WHITE);
+    DrawTextureEx(space, (Vector2){space.width*2 + scroll, 0}, 0.0f, 2.0f, WHITE);
     DrawText("The Core War", SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3, 60, YELLOW);
     for (int i = 0; champ[i] != NULL; i++) {
         sprintf(pres, "Player:%i name:%s comment:%s", champ[i]->nb_player, champ[i]->header.prog_name, champ[i]->header.comment);
@@ -164,6 +169,8 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
+    Image skid_i = LoadImage("ressources/hacker.png");
+    Texture2D skid_t = LoadTextureFromImage(skid_i);
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
@@ -179,13 +186,15 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
             display_history(list);
         }
         if (screen == ENDING)
-            display_end(champ, cycles);
+            display_end(champ, cycles, skid_t);
         ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
     free_llist(list, free);
     UnloadImage(space_i);
     UnloadTexture(space_t);
+    UnloadImage(skid_i);
+    UnloadTexture(skid_t);
     CloseWindow();
     return;
 }
