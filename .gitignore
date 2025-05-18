@@ -9,6 +9,7 @@ bonus/*.tar.gz
 bonus/raylib*
 
 # Libs
+include/llist.h
 include/my.h
 
 # Tests

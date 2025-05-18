@@ -5,7 +5,7 @@
 ## Makefile for libmy
 ##
 
-SRC	=	free_my_str_array.c \
+SRC	:=	free_my_str_array.c \
 		mini_printf.c \
 		my_array_length.c \
 		my_calloc.c \
@@ -49,12 +49,12 @@ SRC	=	free_my_str_array.c \
 		my_strupcase.c \
 		my_swap.c
 
-OBJ	=	$(SRC:.c=.o)
+OBJ	:=	$(SRC:.c=.o)
 
-BINARY	=	libmy.a
-HEADER_FILE	=	my.h
+BINARY	:=	libmy.a
+HEADER_FILE	:=	my.h
 
-CC	=	gcc
+CC	?=	gcc
 CFLAGS	+= -Wall -Wextra -pedantic
 CPPFLAGS	+=	-I ../../include/
 
@@ -65,19 +65,19 @@ endif
 all: ../../include/$(HEADER_FILE) $(BINARY)
 
 $(BINARY): $(OBJ)
-	ar rc $(BINARY) $(OBJ)
+	$(AR) rc $(BINARY) $(OBJ)
 
 ../../include/$(HEADER_FILE):
 	mkdir -p ../../include/
 	cp $(HEADER_FILE) ../../include/$(HEADER_FILE)
 
 clean:
-	rm -f $(OBJ)
+	$(RM) $(OBJ)
 
 fclean:	clean
-	rm -f ../../include/$(HEADER_FILE)
-	rm -f $(BINARY)
-	rm -f ../$(BINARY)
+	$(RM) ../../include/$(HEADER_FILE)
+	$(RM) $(BINARY)
+	$(RM) ../$(BINARY)
 
 re: fclean all
 

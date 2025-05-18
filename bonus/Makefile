@@ -36,11 +36,13 @@ SRC	=	$(INITSRC) \
 
 OBJ	=	$(SRC:.c=.o)
 
+LIBLLIST	:=	../lib/llist/libllist.a
+
 CC	?=	gcc
 CFLAGS	=	-Wall -Wextra
 CPPFLAGS	=	-I ./include/ -I ./$(RAYLIB)/include -I ../include/
-LDFLAGS	=	-L ./$(RAYLIB)/lib -L ../lib/my
-LDLIBS	=	-l:libraylib.a -lm -lmy
+LDFLAGS	=	-L ./$(RAYLIB)/lib -L ../lib/my -L $(dir $(LIBLLIST))
+LDLIBS	=	-l:libraylib.a -lm -lmy -lllist
 
 ifeq ($(ENV), dev)
 	CFLAGS	+=	-g3
@@ -52,7 +54,10 @@ RAYLIB_LINK	=	https://github.com/raysan5/raylib/releases/download/5.5/$(RAYLIB_T
 
 BINARY	=	corewar
 
-all:	$(RAYLIB) $(BINARY)
+all:	$(RAYLIB) $(LIBLLIST) $(BINARY)
+
+$(LIBLLIST):
+	$(MAKE) -C $(dir $(LIBLLIST))
 
 $(BINARY):	$(INITOBJ) $(OBJ)
 	$(CC) -o $(BINARY) $(INITOBJ) $(OBJ) $(LDFLAGS) $(LDLIBS)
@@ -63,9 +68,11 @@ $(RAYLIB):
 	$(RM) $(RAYLIB_TAR)
 
 clean:
+	$(MAKE) -C $(dir $(LIBLLIST)) clean
 	$(RM) $(OBJ)
 
 fclean:	clean
+	$(MAKE) -C $(dir $(LIBLLIST)) fclean
 	$(RM) $(BINARY)
 
 re:	fclean all
