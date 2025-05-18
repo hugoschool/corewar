@@ -16,6 +16,7 @@
     #include <stdio.h>
     #include "corewar.h"
     #include "raylib.h"
+    #include "../lib/llist/llist.h"
 
 // Menu
 typedef enum GameScreen {
@@ -37,11 +38,12 @@ typedef struct {
 void display_player(champion_t **champs, int cycles);
 void display_end(champion_t **champ, int cycles);
 void display_player_index(champion_t **champ, map_t *map);
+void display_history(linked_list_t *list);
 
 // VM
 int do_vm_ray(flags_t *flags);
 void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
-int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed);
+int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed, linked_list_t **list);
 int sti_ray(map_t *map, champion_t *champ, int proc_index);
 int st_ray(map_t *map, champion_t *champ, int proc_index);
 

@@ -8,6 +8,7 @@
 #include "corewar.h"
 #include "bonus.h"
 #include "raylib.h"
+#include "llist.h"
 
 void display_player(champion_t **champs, int cycles)
 {
@@ -51,6 +52,25 @@ void display_player_index(champion_t **champ, map_t *map)
         for (int j = 0; j < champ[i]->nb_procs; j++) {
             if (!champ[i]->dead && !champ[i]->procs[j].dead)
                 map->is_index[champ[i]->procs[j].index] = true;
+        }
+    }
+}
+
+void display_history(linked_list_t *list)
+{
+    static bool history = false;
+    int i = SCREEN_WIDTH / 1.25;
+    int y = 90;
+    linked_list_t *tmp = list;
+
+    if (IsKeyPressed(KEY_H))
+        history = !history;
+    if (history) {
+        DrawRectangle(SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 920, WHITE);
+        while (tmp != NULL && y < 1000) {
+            DrawText(tmp->data, i + 10, y, 40, BLACK);
+            y += 42;
+            tmp = tmp->next;
         }
     }
 }

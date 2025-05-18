@@ -40,11 +40,15 @@ endif
 
 NAME	=	corewar
 LIBMY	=	./lib/my/libmy.a
+LLIST	=	./lib/llist/libllist.a
 
-all:	$(LIBMY) $(NAME)
+all:	$(LIBMY) $(LLIST) $(NAME)
 
 $(LIBMY):
 	$(MAKE) -C $(dir $(LIBMY))
+
+$(LLIST):
+	$(MAKE) -C $(dir $(LLIST))
 
 $(NAME):	$(OBJ)
 	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS) $(LDLIBS)

@@ -8,6 +8,7 @@
 #include "bonus.h"
 #include "corewar.h"
 #include "raylib.h"
+#include "llist.h"
 #define _GNU_SOURCE
 
 void update_champions_and_cycles(champion_t **champ, int *cycles)
@@ -61,13 +62,13 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
 }
 
 void do_instructions(map_t *map, champion_t **champs,
-    int index, int *nb_live, float speed)
+    int index, int *nb_live, float speed, linked_list_t **list)
 {
     int nb_player = 0;
 
     for (int i = 0; i < champs[index]->nb_procs; i++)
         if (!champs[index]->dead) {
-            nb_player = inst_ray(map, champs[index], i, speed);
+            nb_player = inst_ray(map, champs[index], i, speed, list);
             set_alive(champs, nb_player, nb_live);
         }
 }
@@ -79,7 +80,7 @@ bool set_pause(bool pause)
     return pause;
 }
 
-bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause)
+bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause, linked_list_t **list)
 {
     static int cycles = 0;
     static int nb_delta = 0;
@@ -92,7 +93,7 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
         if (!champs_alive(champ, screen))
             return true;
         for (int i = 0; champ[i] != NULL; i++)
-            do_instructions(map, champ, i, &nb_live, speed);
+            do_instructions(map, champ, i, &nb_live, speed, list);
         print_map_cycle(flags, map->byte, cycles);
         if (nb_live >= NBR_LIVE) {
             nb_delta++;
@@ -158,6 +159,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     bool pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
+    linked_list_t *list = NULL;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
     bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
@@ -172,13 +174,16 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         ClearBackground(BLACK);
         if (screen == LOGO)
             display_logo(champ, space_t);
-        if (screen == GAMEPLAY)
+        if (screen == GAMEPLAY) {
             display_map(map, SCREEN_WIDTH, champ, cycles);
+            display_history(list);
+        }
         if (screen == ENDING)
             display_end(champ, cycles);
-        ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause);
+        ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
+    free_llist(list, free);
     UnloadImage(space_i);
     UnloadTexture(space_t);
     CloseWindow();
