@@ -15,7 +15,7 @@ void display_player(champion_t **champs, int cycles)
     char proc[100];
 
     for (int i = 0; champs[i] != NULL; i++) {
-        DrawText(champs[i]->header.prog_name, disp, 20, 40, RED);
+        DrawText(champs[i]->header.prog_name, disp, 20, 40, get_champ_color(champs[i]));
         DrawText("Live state:", disp, 80, 20, RAYWHITE);
         if (!(champs[i]->alive) && !(champs[i]->dead))
             DrawRectangle(disp + 120, 80, 40, 40, GRAY);

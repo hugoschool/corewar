@@ -17,13 +17,18 @@
     #include "corewar.h"
     #include "raylib.h"
 
+// Menu
 typedef enum GameScreen {
     LOGO = 0,
     GAMEPLAY,
     ENDING
 } GameScreen;
 
+// Colors
 extern const Color colors[];
+Color get_champ_color(champion_t *champion);
+
+// Display
 typedef struct {
     unsigned char byte[MEM_SIZE];
     Color color[MEM_SIZE];
@@ -31,7 +36,10 @@ typedef struct {
 } map_t;
 void display_player(champion_t **champs, int cycles);
 void display_end(champion_t **champ, int cycles);
+void display_player_index(champion_t **champ, map_t *map);
+
+// VM
 int do_vm_ray(flags_t *flags);
 void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
-void display_player_index(champion_t **champ, map_t *map);
+
 #endif

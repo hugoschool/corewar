@@ -27,8 +27,8 @@ bool add_to_map_and_champ(map_t *map,
     fread(&(map->byte[champion->procs[0].index]), sizeof(char),
         info.st_size - sizeof(header_t), champ.fp);
     for (uint64_t i = champion->procs[0].index; i <
-    champion->procs[0].index + info.st_size - sizeof(header_t); i++) {
-        map->color[i] = colors[(champion->nb_player % 4) - 1];
+        champion->procs[0].index + info.st_size - sizeof(header_t); i++) {
+        map->color[i] = get_champ_color(champion);
         map->is_index[i] = false;
    }
     return true;
