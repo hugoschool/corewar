@@ -14,7 +14,8 @@ int live(unsigned char map[MEM_SIZE], champion_t *champ, int proc_index)
 
     while (index < 0)
         index += MEM_SIZE;
-    value = (map[index % MEM_SIZE] << 24) + (map[(index + 1) % MEM_SIZE] << 16) +
+    value = (map[index % MEM_SIZE] << 24) +
+        (map[(index + 1) % MEM_SIZE] << 16) +
         (map[(index + 2) % MEM_SIZE] << 8) + map[(index + 3) % MEM_SIZE];
     champ->procs[proc_index].alive = true;
     champ->procs[proc_index].index += 5;

@@ -41,10 +41,11 @@ static void main_ld(unsigned char map[MEM_SIZE], champion_t *champ,
     if (lld)
         val %= IDX_MOD;
     if (types[0] != 3)
-        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1] = val;
+        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1]
+            = val;
     else
-        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1] = get_val_ind(map,
-            val);
+        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1] =
+        get_val_ind(map, val);
     champ->procs[proc_index].carry = val == 0 ? 1 : 0;
     champ->procs[proc_index].index += 1;
     free(types);
