@@ -35,7 +35,7 @@ typedef struct {
     Color color[MEM_SIZE];
     bool is_index[MEM_SIZE];
 } map_t;
-void display_player(champion_t **champs, int cycles);
+void display_player(champion_t **champs, int cycles, linked_list_t *list);
 void display_end(champion_t **champ, int cycles, Texture2D skid);
 void display_player_index(champion_t **champ, map_t *map);
 void display_history(linked_list_t *list);

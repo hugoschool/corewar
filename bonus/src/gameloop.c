@@ -111,19 +111,19 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
     if (*screen == GAMEPLAY) {
         sprintf(lives, "Lives: %d / 40", nb_live);
         DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
-        sprintf(nb_cycles, "Cycles: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
+        sprintf(nb_cycles, "Cycles to die: %d / %d", cycles, CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA));
         DrawText(nb_cycles, SCREEN_WIDTH / 1.5, SCREEN_HEIGHT / 3 - 20, 20 , RAYWHITE);
     }
     return false;
 }
 
-void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycles)
+void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycles, linked_list_t *list)
 {
     char buf[3] = "";
     int x = INIT_X;
     int y = INIT_Y;
 
-    display_player(champ, cycles);
+    display_player(champ, cycles, list);
     display_player_index(champ, map);
     for (int i = 0; i < MEM_SIZE; i++, x+= 20) {
         if (x >= screenWidth - (INIT_X * 2)) {
@@ -182,7 +182,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         if (screen == LOGO)
             display_logo(champ, space_t);
         if (screen == GAMEPLAY) {
-            display_map(map, SCREEN_WIDTH, champ, cycles);
+            display_map(map, SCREEN_WIDTH, champ, cycles, list);
             display_history(list);
         }
         if (screen == ENDING)

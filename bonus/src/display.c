@@ -10,12 +10,17 @@
 #include "raylib.h"
 #include "llist.h"
 
-void display_player(champion_t **champs, int cycles)
+void display_player(champion_t **champs, int cycles, linked_list_t *list)
 {
     int disp = 10;
     char proc[100];
+    Rectangle rect = {disp, 150, 200, 180};
+    linked_list_t *tmp = list;
+    int y = 150;
 
     for (int i = 0; champs[i] != NULL; i++) {
+        y = 150;
+        tmp = list;
         DrawText(champs[i]->header.prog_name, disp, 20, 40, get_champ_color(champs[i]));
         DrawText("Live state:", disp, 80, 20, RAYWHITE);
         if (!(champs[i]->alive) && !(champs[i]->dead))
@@ -26,6 +31,15 @@ void display_player(champion_t **champs, int cycles)
             DrawRectangle(disp + 120, 80, 40, 40, RED);
         sprintf(proc, "nb of process: %d", champs[i]->nb_procs);
         DrawText(TextFormat("nb of process: %d", champs[i]->nb_procs), disp, 120, 20, RAYWHITE);
+        rect.x = disp;
+        DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
+        while (tmp != NULL && y < 200 + 130) {
+            if (my_strncmp(champs[i]->header.prog_name, tmp->data, my_strlen(champs[i]->header.prog_name)) == 0) {
+                DrawText(tmp->data, disp + 10, y, 20, colors[champs[i]->nb_player - 1]);
+                y += 20;
+            }
+            tmp = tmp->next;
+        }
         disp += SCREEN_WIDTH / 4;
     }
     sprintf(proc, "Total Cycles: %d", cycles);
@@ -68,11 +82,12 @@ void display_history(linked_list_t *list)
     int i = SCREEN_WIDTH / 1.25;
     int y = 90;
     linked_list_t *tmp = list;
+    Rectangle rect = {SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 920};
 
     if (IsKeyPressed(KEY_H))
         history = !history;
     if (history) {
-        DrawRectangle(SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 920, WHITE);
+        DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
         while (tmp != NULL && y < 1000) {
             DrawText(tmp->data, i + 10, y, 40, BLACK);
             y += 42;
