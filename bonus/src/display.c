@@ -84,14 +84,14 @@ void display_history(linked_list_t *list)
     int i = SCREEN_WIDTH / 1.25;
     int y = 90;
     linked_list_t *tmp = list;
-    Rectangle rect = {SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 920};
+    Rectangle rect = {SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 900};
     history_t *data = NULL;
 
     if (IsKeyPressed(KEY_H))
         history = !history;
     if (history) {
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
-        while (tmp != NULL && y < 1000) {
+        while (tmp != NULL && y < 950) {
             data = tmp->data;
             DrawText(data->str, i + 10, y, 40, get_champ_color(data->nb_player));
             y += 42;
