@@ -61,6 +61,12 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
     }
 }
 
+static void free_history(history_t *history)
+{
+    free(history->str);
+    free(history);
+}
+
 void do_instructions(map_t *map, champion_t **champs,
     int index, int *nb_live, float speed, linked_list_t **list)
 {
@@ -190,7 +196,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
-    free_llist(list, free);
+    free_llist(list, free_history);
     UnloadImage(space_i);
     UnloadTexture(space_t);
     UnloadImage(skid_i);

@@ -26,7 +26,7 @@ int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed, linked_
 {
     op_t inst = get_instruction_ray(map->byte, champ->procs[proc_index].index);
     int nb_player = 0;
-    char *inst_str = NULL;
+    history_t *history = NULL;
 
     if (champ->procs[proc_index].index >= MEM_SIZE)
         champ->procs[proc_index].index = 0;
@@ -36,9 +36,11 @@ int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed, linked_
             return 0;
         }
         if (!champ->procs[proc_index].dead) {
-            inst_str = calloc((my_strlen(inst.mnemonique) + my_strlen(champ->header.prog_name) + 10), sizeof(char));
-            sprintf(inst_str, "%s: %s", champ->header.prog_name, inst.mnemonique);
-            push_to_list(list, inst_str);
+            history = malloc(sizeof(history_t));
+            history->str = calloc((my_strlen(inst.mnemonique) + my_strlen(champ->header.prog_name) + 10), sizeof(char));
+            sprintf(history->str, "%s: %s", champ->header.prog_name, inst.mnemonique);
+            history->champ_color = get_champ_color(champ);
+            push_to_list(list, history);
             if (inst.code == 3)
                 st_ray(map, champ, proc_index);
             else if (inst.code == 0x0b)

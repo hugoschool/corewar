@@ -17,6 +17,7 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
     Rectangle rect = {disp, 150, 200, 180};
     linked_list_t *tmp = list;
     int y = 150;
+    history_t *data = NULL;
 
     for (int i = 0; champs[i] != NULL; i++) {
         y = 150;
@@ -34,8 +35,9 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
         rect.x = disp;
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
         while (tmp != NULL && y < 200 + 130) {
-            if (my_strncmp(champs[i]->header.prog_name, tmp->data, my_strlen(champs[i]->header.prog_name)) == 0) {
-                DrawText(tmp->data, disp + 10, y, 20, colors[champs[i]->nb_player - 1]);
+            data = tmp->data;
+            if (my_strncmp(champs[i]->header.prog_name, data->str, my_strlen(champs[i]->header.prog_name)) == 0) {
+                DrawText(data->str, disp + 10, y, 20, data->champ_color);
                 y += 20;
             }
             tmp = tmp->next;
@@ -83,13 +85,15 @@ void display_history(linked_list_t *list)
     int y = 90;
     linked_list_t *tmp = list;
     Rectangle rect = {SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 920};
+    history_t *data = NULL;
 
     if (IsKeyPressed(KEY_H))
         history = !history;
     if (history) {
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
         while (tmp != NULL && y < 1000) {
-            DrawText(tmp->data, i + 10, y, 40, BLACK);
+            data = tmp->data;
+            DrawText(data->str, i + 10, y, 40, data->champ_color);
             y += 42;
             tmp = tmp->next;
         }

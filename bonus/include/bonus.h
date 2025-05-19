@@ -38,6 +38,12 @@ typedef struct {
 void display_player(champion_t **champs, int cycles, linked_list_t *list);
 void display_end(champion_t **champ, int cycles, Texture2D skid);
 void display_player_index(champion_t **champ, map_t *map);
+
+// History
+typedef struct {
+    char *str;
+    Color champ_color;
+} history_t;
 void display_history(linked_list_t *list);
 
 // VM
