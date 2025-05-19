@@ -98,8 +98,8 @@ void print_map_cycle(flags_t *flags, unsigned char map[MEM_SIZE], int cycles);
 int ltb_endian(int little);
 args_type_t *byte_to_args(uint8_t byte);
 int get_nb_bytes(args_type_t args);
-int get_reg_index(unsigned char map_i);
 int get_inst_size(unsigned char coding_byte);
+int get_correct_index(int index);
 
 
 #endif

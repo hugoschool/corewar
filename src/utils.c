@@ -43,9 +43,11 @@ int get_nb_bytes(args_type_t args)
     return 0;
 }
 
-int get_reg_index(unsigned char map_i)
+int get_correct_index(int index)
 {
-    return map_i < REG_NUMBER ? map_i - 1 : 0;
+    while (index < 0)
+        index += 1;
+    return index;
 }
 
 int get_inst_size(unsigned char coding_byte)

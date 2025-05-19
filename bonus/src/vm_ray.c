@@ -28,7 +28,7 @@ bool add_to_map_and_champ(map_t *map,
         info.st_size - sizeof(header_t), champ.fp);
     for (uint64_t i = champion->procs[0].index; i <
         champion->procs[0].index + info.st_size - sizeof(header_t); i++) {
-        map->color[i] = get_champ_color(champion->nb_player);
+        map->color[i] = get_champ_color(champion->nb_player % 4);
         map->is_index[i] = false;
    }
     return true;
@@ -43,6 +43,7 @@ int do_vm_ray(flags_t *flags)
     for (int i = 0; i < MEM_SIZE; i++) {
         map.byte[i] = 0;
         map.color[i] = RAYWHITE;
+        map.is_index[i] = false;
     }
     for (int i = 0; i < flags->champions_amt; i++) {
         if (!add_to_map_and_champ(&map, flags->champions[i], index, champ[i])) {

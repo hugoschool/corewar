@@ -49,7 +49,7 @@ void display_history(linked_list_t *list);
 // VM
 int do_vm_ray(flags_t *flags);
 void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
-int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed, linked_list_t **list);
+int inst_ray(map_t *map, champion_t *champ, int proc_index, linked_list_t **list);
 int sti_ray(map_t *map, champion_t *champ, int proc_index);
 int st_ray(map_t *map, champion_t *champ, int proc_index);
 

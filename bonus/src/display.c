@@ -73,7 +73,7 @@ void display_player_index(champion_t **champ, map_t *map)
     for (int i = 0; champ[i] != NULL; i++) {
         for (int j = 0; j < champ[i]->nb_procs; j++) {
             if (!champ[i]->dead && !champ[i]->procs[j].dead)
-                map->is_index[champ[i]->procs[j].index] = true;
+                map->is_index[(champ[i]->procs[j].index) % MEM_SIZE] = true;
         }
     }
 }

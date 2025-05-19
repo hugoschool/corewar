@@ -34,16 +34,16 @@ static void main_ld(unsigned char map[MEM_SIZE], champion_t *champ,
     int proc_index, bool lld)
 {
     int index = champ->procs[proc_index].index;
-    args_type_t *types = byte_to_args(map[index + 1]);
+    args_type_t *types = byte_to_args(map[get_correct_index(index + 1)]);
     int val = get_value(map, &(champ->procs[proc_index]), types[0]);
 
     index = champ->procs[proc_index].index;
     if (lld)
         val %= IDX_MOD;
     if (types[0] != 3)
-        champ->procs[proc_index].registers[map[index] - 1] = val;
+        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1] = val;
     else
-        champ->procs[proc_index].registers[map[index] - 1] = get_val_ind(map,
+        champ->procs[proc_index].registers[map[get_correct_index(index)] - 1] = get_val_ind(map,
             val);
     champ->procs[proc_index].carry = val == 0 ? 1 : 0;
     champ->procs[proc_index].index += 1;

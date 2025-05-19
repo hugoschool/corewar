@@ -5,11 +5,12 @@
 ** gameloop.c
 */
 
+#define _GNU_SOURCE
 #include "bonus.h"
 #include "corewar.h"
 #include "raylib.h"
 #include "llist.h"
-#define _GNU_SOURCE
+#include <unistd.h>
 
 void update_champions_and_cycles(champion_t **champ, int *cycles)
 {
@@ -68,13 +69,13 @@ static void free_history(history_t *history)
 }
 
 void do_instructions(map_t *map, champion_t **champs,
-    int index, int *nb_live, float speed, linked_list_t **list)
+    int index, int *nb_live, linked_list_t **list)
 {
     int nb_player = 0;
 
     for (int i = 0; i < champs[index]->nb_procs; i++)
         if (!champs[index]->dead) {
-            nb_player = inst_ray(map, champs[index], i, speed, list);
+            nb_player = inst_ray(map, champs[index], i, list);
             set_alive(champs, nb_player, nb_live);
         }
 }
@@ -93,13 +94,14 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
     static int nb_live = 0;
     char lives[24];
     char nb_cycles[34];
-    static float speed = 1.0;
+    static useconds_t sleep = 10;
 
+    usleep(sleep);
     if (pause == true && *screen != ENDING) {
         if (!champs_alive(champ, screen))
             return true;
         for (int i = 0; champ[i] != NULL; i++)
-            do_instructions(map, champ, i, &nb_live, speed, list);
+            do_instructions(map, champ, i, &nb_live, list);
         print_map_cycle(flags, map->byte, cycles);
         if (nb_live >= NBR_LIVE) {
             nb_delta++;
@@ -107,13 +109,13 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycl
         }
         if (cycles >= (CYCLE_TO_DIE - (nb_delta * CYCLE_DELTA)))
             update_champions_and_cycles(champ, &cycles);
-        cycles += (int)speed;
-        (*tot_cycles) += (int)speed;
+        cycles++;
+        (*tot_cycles)++;
     }
     if (IsKeyPressed(KEY_DOWN))
-        speed /= 1.5;
+        sleep *= 1.5;
     if (IsKeyPressed(KEY_UP))
-        speed *= 1.5;
+        sleep /= 1.5;
     if (*screen == GAMEPLAY) {
         sprintf(lives, "Lives: %d / 40", nb_live);
         DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);

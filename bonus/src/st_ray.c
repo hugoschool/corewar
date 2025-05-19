@@ -16,7 +16,7 @@ static void rep_map(int val, map_t *map, int index, int player_nb)
     map->byte[index + 2] = val << 8;
     map->byte[index + 3] = val << 0;
     for (int i = 0; i < 4; i++)
-        map->color[index + i] = get_champ_color(player_nb);
+        map->color[index + i] = get_champ_color(player_nb % 4);
 }
 
 int st_ray(map_t *map, champion_t *champ, int proc_index)

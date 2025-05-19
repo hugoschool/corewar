@@ -35,6 +35,7 @@ static void main_ldi(unsigned char map[MEM_SIZE], champion_t *champ,
     int index = champ->procs[proc_index].index + 1;
     args_type_t *types = byte_to_args(map[index]);
     int value = 0;
+    int reg = 0;
 
     get_value(champ->procs[proc_index], types[0], map, index + 1);
     index += get_nb_bytes(types[0]);
@@ -42,8 +43,10 @@ static void main_ldi(unsigned char map[MEM_SIZE], champion_t *champ,
     index += get_nb_bytes(types[1]);
     if (!lldi)
         value = value % IDX_MOD;
-    champ->procs[proc_index].registers[map[index + 3] - 1] = value;
-    champ->procs[proc_index].carry = value == 0 ? 1 : 0;
+    if (map[(index + 3) % MEM_SIZE] >= 1 && map[(index + 3) % MEM_SIZE] <= 16) {
+        champ->procs[proc_index].registers[map[(index + 3) % MEM_SIZE] - 1] = value;
+        champ->procs[proc_index].carry = value == 0 ? 1 : 0;
+    }
     champ->procs[proc_index].index += ldi_nb_bytes(types);
     free(types);
 }
