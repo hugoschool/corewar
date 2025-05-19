@@ -15,7 +15,7 @@ const Color colors[] = {
     ORANGE
 };
 
-Color get_champ_color(champion_t *champion)
+Color get_champ_color(int nb_player)
 {
-    return colors[(champion->nb_player % (MAX_CHAMPIONS_AMT + 1)) - 1];
+    return colors[(nb_player % (MAX_CHAMPIONS_AMT + 1)) - 1];
 }

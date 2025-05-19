@@ -22,7 +22,7 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
     for (int i = 0; champs[i] != NULL; i++) {
         y = 150;
         tmp = list;
-        DrawText(champs[i]->header.prog_name, disp, 20, 40, get_champ_color(champs[i]));
+        DrawText(champs[i]->header.prog_name, disp, 20, 40, get_champ_color(champs[i]->nb_player));
         DrawText("Live state:", disp, 80, 20, RAYWHITE);
         if (!(champs[i]->alive) && !(champs[i]->dead))
             DrawRectangle(disp + 120, 80, 40, 40, GRAY);
@@ -36,8 +36,8 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
         while (tmp != NULL && y < 200 + 130) {
             data = tmp->data;
-            if (my_strncmp(champs[i]->header.prog_name, data->str, my_strlen(champs[i]->header.prog_name)) == 0) {
-                DrawText(data->str, disp + 10, y, 20, data->champ_color);
+            if (champs[i]->nb_player == data->nb_player) {
+                DrawText(data->str, disp + 10, y, 20, get_champ_color(data->nb_player));
                 y += 20;
             }
             tmp = tmp->next;
@@ -93,7 +93,7 @@ void display_history(linked_list_t *list)
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
         while (tmp != NULL && y < 1000) {
             data = tmp->data;
-            DrawText(data->str, i + 10, y, 40, data->champ_color);
+            DrawText(data->str, i + 10, y, 40, get_champ_color(data->nb_player));
             y += 42;
             tmp = tmp->next;
         }

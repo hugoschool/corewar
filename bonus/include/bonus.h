@@ -27,7 +27,7 @@ typedef enum GameScreen {
 
 // Colors
 extern const Color colors[];
-Color get_champ_color(champion_t *champion);
+Color get_champ_color(int nb_player);
 
 // Display
 typedef struct {
@@ -42,7 +42,7 @@ void display_player_index(champion_t **champ, map_t *map);
 // History
 typedef struct {
     char *str;
-    Color champ_color;
+    int nb_player;
 } history_t;
 void display_history(linked_list_t *list);
 

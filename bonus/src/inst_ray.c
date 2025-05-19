@@ -39,7 +39,7 @@ int inst_ray(map_t *map, champion_t *champ, int proc_index, float speed, linked_
             history = malloc(sizeof(history_t));
             history->str = calloc((my_strlen(inst.mnemonique) + my_strlen(champ->header.prog_name) + 10), sizeof(char));
             sprintf(history->str, "%s: %s", champ->header.prog_name, inst.mnemonique);
-            history->champ_color = get_champ_color(champ);
+            history->nb_player = champ->nb_player;
             push_to_list(list, history);
             if (inst.code == 3)
                 st_ray(map, champ, proc_index);

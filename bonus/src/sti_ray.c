@@ -43,7 +43,7 @@ int sti_ray(map_t *map, champion_t *champ, int proc_index)
 
     for (int i = 0; i < 4; i++) {
         map->byte[(where + i) % MEM_SIZE] = replace[i];
-        map->color[(where + i) % MEM_SIZE] = colors[champ->nb_player % 4 - 1];
+        map->color[(where + i) % MEM_SIZE] = get_champ_color(champ->nb_player);
     }
     champ->procs[proc_index].index += count_bytes + 1;
     free(params);
