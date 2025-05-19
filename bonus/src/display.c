@@ -50,9 +50,10 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
 
 void display_end(champion_t **champ, int cycles, Texture2D skid)
 {
-    char winner[PROG_NAME_LENGTH + 40];
+    char winner[PROG_NAME_LENGTH + 61];
     int nb_winner = 0;
     static float scrolling = 0.0f;
+    int y = 0;
 
     scrolling -= 0.5f;
     if (scrolling <= -skid.width*2)
@@ -63,9 +64,16 @@ void display_end(champion_t **champ, int cycles, Texture2D skid)
     }
     DrawTextureEx(skid, (Vector2){scrolling, 20}, 0.0f, 2.0f, WHITE);
     DrawTextureEx(skid, (Vector2){skid.width*2 + scrolling, 20}, 0.0f, 2.0f, WHITE);
-    sprintf(winner, "The Winner is player n°%d(%s)", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name);
+    sprintf(winner, "The Winner is player n°%d(%s) with %d procs", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name, champ[nb_winner]->nb_procs);
     DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HEIGHT / 2 - 70, 70, YELLOW);
-    DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5, 20, RAYWHITE);
+    DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5 - 30, 20, RAYWHITE);
+    for (int i = 0; champ[i] != NULL; i++) {
+        if (champ[i]->dead) {
+            DrawText(TextFormat("The player n°%d(%s) loses with %d procs", champ[i]->nb_player, champ[i]->header.prog_name, champ[i]->nb_procs),
+            SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5 + y, 20, WHITE);
+            y += 20;
+        }
+    }
 }
 
 void display_player_index(champion_t **champ, map_t *map)

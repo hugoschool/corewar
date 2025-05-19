@@ -47,6 +47,17 @@ static int bit_xor(int value, int cur_val)
     return value ^ cur_val;
 }
 
+static void update_proc(process_t *proc, unsigned char map[MEM_SIZE],
+    int value, int index)
+{
+    index = get_correct_index(index);
+    if (map[index] <= REG_NUMBER && map[index] > 0) {
+        proc->registers[map[index]] = value;
+        proc->carry = proc->registers[map[index]] == 0 ? 1 : 0;
+    } else
+        proc->carry = 0;
+}
+
 static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
     int proc_index, int (*bit_operation)(int value, int cur_val))
 {
@@ -65,9 +76,7 @@ static void binary_logic(unsigned char map[MEM_SIZE], champion_t *champ,
         else
             value = (*bit_operation)(value, cur_val);
     }
-    champ->procs[proc_index].registers[map[index] - 1] = value;
-    champ->procs[proc_index].carry = champ->procs[proc_index]
-        .registers[map[index] - 1] == 0 ? 1 : 0;
+    update_proc(&(champ->procs[proc_index]), map, value, index);
     champ->procs[proc_index].index += index_nb_bytes(types);
     free(types);
 }
