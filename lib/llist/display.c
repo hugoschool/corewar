@@ -7,7 +7,7 @@
 
 #include "llist.h"
 
-void display_list(linked_list_t *begin, void(*disp_fct)())
+void display_list(linked_list_t *begin, void(*disp_fct)(void *))
 {
     linked_list_t *current = begin;
 

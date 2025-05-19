@@ -17,14 +17,16 @@ typedef struct linked_list_s {
 
 void push_to_list(linked_list_t **begin, void *data);
 void push_to_end_list(linked_list_t **begin, void *data);
-void display_list(linked_list_t *begin, void(*disp_fct)());
+void display_list(linked_list_t *begin, void(*disp_fct)(void *));
 bool replace_in_list(linked_list_t *begin, void *input,
-    bool(*compare)(), void *new_data);
-void *search_in_list(linked_list_t *begin, void *input, bool(*compare)());
-void delete_in_list(linked_list_t **begin, void const *ref, int(*cmp_fct)());
+    bool(*compare)(void *, void *), void *new_data);
+void *search_in_list(linked_list_t *begin, void *input,
+    bool(*compare)(void *, void *));
+void delete_in_list(linked_list_t **begin, void const *ref,
+    int(*cmp_fct)(void *, void const *));
 linked_list_t *duplicate_llist(linked_list_t *begin,
-    void *(*duplicate_data)());
-void free_llist(linked_list_t *begin, void(*destroy_data)());
+    void *(*duplicate_data)(void *));
+void free_llist(linked_list_t *begin, void(*destroy_data)(void *));
 int length_llist(linked_list_t *begin);
 
 #endif

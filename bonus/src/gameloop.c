@@ -62,8 +62,10 @@ void set_alive(champion_t **champs, int player_nb, int *nb_live)
     }
 }
 
-static void free_history(history_t *history)
+static void free_history(void *data)
 {
+    history_t *history = data;
+
     free(history->str);
     free(history);
 }
@@ -87,7 +89,8 @@ bool set_pause(bool pause)
     return pause;
 }
 
-bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ, int *tot_cycles, GameScreen *screen, bool pause, linked_list_t **list)
+bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ,
+    int *tot_cycles, GameScreen *screen, bool pause, linked_list_t **list)
 {
     static int cycles = 0;
     static int nb_delta = 0;
@@ -176,7 +179,6 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     linked_list_t *list = NULL;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
     InitAudioDevice();
-    bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
     Image skid_i = LoadImage("ressources/hacker.png");
@@ -201,7 +203,7 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         }
         if (screen == ENDING)
             display_end(champ, cycles, skid_t, music);
-        ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
+        run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
     free_llist(list, free_history);

@@ -8,7 +8,7 @@
 #include "llist.h"
 
 bool replace_in_list(linked_list_t *begin, void *input,
-    bool(*compare)(), void *new_data)
+    bool(*compare)(void *, void *), void *new_data)
 {
     linked_list_t *temp = begin;
 

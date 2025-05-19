@@ -7,7 +7,8 @@
 
 #include "llist.h"
 
-linked_list_t *duplicate_llist(linked_list_t *begin, void *(*duplicate_data)())
+linked_list_t *duplicate_llist(linked_list_t *begin,
+    void *(*duplicate_data)(void *))
 {
     linked_list_t *dupe = NULL;
     linked_list_t *current = begin;

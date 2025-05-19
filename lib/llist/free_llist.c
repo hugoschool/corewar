@@ -7,7 +7,7 @@
 
 #include "llist.h"
 
-void free_llist(linked_list_t *begin, void(*destroy_data)())
+void free_llist(linked_list_t *begin, void(*destroy_data)(void *))
 {
     linked_list_t *current = begin;
     linked_list_t *temp = NULL;

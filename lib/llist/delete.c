@@ -7,7 +7,8 @@
 
 #include "llist.h"
 
-void delete_in_list(linked_list_t **begin, void const *ref, int(*cmp_fct)())
+void delete_in_list(linked_list_t **begin, void const *ref,
+    int(*cmp_fct)(void *, void const *))
 {
     linked_list_t *previous = malloc(sizeof(linked_list_t));
     linked_list_t *current = NULL;

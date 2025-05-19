@@ -7,7 +7,8 @@
 
 #include "llist.h"
 
-void *search_in_list(linked_list_t *begin, void *input, bool(*compare)())
+void *search_in_list(linked_list_t *begin, void *input,
+    bool(*compare)(void *, void *))
 {
     linked_list_t *temp = begin;
 
