@@ -147,12 +147,13 @@ void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycl
     }
 }
 
-void display_logo(champion_t **champ, Texture2D space)
+void display_logo(champion_t **champ, Texture2D space, Music intro)
 {
     char pres[COMMENT_LENGTH * 2 + PROG_NAME_LENGTH];
     int y = 0;
     static float scroll = 0.0f;
 
+    UpdateMusicStream(intro);
     scroll -= 0.5f;
     if (scroll <= -space.width*2)
         scroll = 0;
@@ -174,13 +175,18 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
     int cycles = 0;
     linked_list_t *list = NULL;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
+    InitAudioDevice();
     bool ended = false;
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
     Image skid_i = LoadImage("ressources/hacker.png");
     Texture2D skid_t = LoadTextureFromImage(skid_i);
+    Music music = LoadMusicStream("ressources/win.mp3");
+    Music intro = LoadMusicStream("ressources/intro.mp3");
     SetTargetFPS(60);
 
+    PlayMusicStream(music);
+    PlayMusicStream(intro);
     while (!WindowShouldClose()) {
         pause = set_pause(pause);
         if (pause == 1 && screen != ENDING)
@@ -188,17 +194,19 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         BeginDrawing();
         ClearBackground(BLACK);
         if (screen == LOGO)
-            display_logo(champ, space_t);
+            display_logo(champ, space_t, intro);
         if (screen == GAMEPLAY) {
             display_map(map, SCREEN_WIDTH, champ, cycles, list);
             display_history(list);
         }
         if (screen == ENDING)
-            display_end(champ, cycles, skid_t);
+            display_end(champ, cycles, skid_t, music);
         ended = run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
     free_llist(list, free_history);
+    UnloadMusicStream(music);
+    UnloadMusicStream(intro);
     UnloadImage(space_i);
     UnloadTexture(space_t);
     UnloadImage(skid_i);

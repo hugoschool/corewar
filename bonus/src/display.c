@@ -48,13 +48,14 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
     DrawText(proc, 20, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
 }
 
-void display_end(champion_t **champ, int cycles, Texture2D skid)
+void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
 {
     char winner[PROG_NAME_LENGTH + 61];
     int nb_winner = 0;
     static float scrolling = 0.0f;
     int y = 0;
 
+    UpdateMusicStream(music);
     scrolling -= 0.5f;
     if (scrolling <= -skid.width*2)
         scrolling = 0;
