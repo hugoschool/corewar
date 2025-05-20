@@ -48,8 +48,9 @@ void create_button(GuiWindowFileDialogState *file_dialog, int *selected_gui, cha
 flags_t *handle_keygen(flags_t *flags)
 {
     flags->champions = init_champions();
-
     InitWindow(KEYGEN_SCREEN_WIDTH, KEYGEN_SCREEN_HEIGHT, "Core War Keygen --- TEAM FREAKY");
+    InitAudioDevice();
+    Music music = LoadMusicStream("ressources/keygen.mp3");
     GuiWindowFileDialogState file_dialog = InitGuiWindowFileDialog(GetWorkingDirectory());
     char file_name[MAX_CHAMPIONS_AMT][PATH_MAX] = {0};
     int selected_gui = -1;
@@ -59,8 +60,10 @@ flags_t *handle_keygen(flags_t *flags)
     int title_x = default_scrolling_text_x(KEYGEN_TITLE_SCROLLING_TEXT, KEYGEN_MAX_WIDTH, KEYGEN_TITLE_FONT_SIZE, false);
     int credits_x = default_scrolling_text_x(KEYGEN_CREDITS_SCROLLING_TEXT, KEYGEN_MAX_WIDTH, KEYGEN_CREDITS_FONT_SIZE, true);
 
+    PlayMusicStream(music);
     GuiSetStyle(DEFAULT, BACKGROUND_COLOR, 0x00000000);
     while (!WindowShouldClose()) {
+        UpdateMusicStream(music);
         if (file_dialog.SelectFilePressed) {
             strncpy(file_name[selected_gui], TextFormat("%s" PATH_SEPERATOR "%s", file_dialog.dirPathText, file_dialog.fileNameText), PATH_MAX);
             set_champion(flags, selected_gui, file_name[selected_gui]);
@@ -85,6 +88,8 @@ flags_t *handle_keygen(flags_t *flags)
         GuiWindowFileDialog(&file_dialog);
         EndDrawing();
     }
+    UnloadMusicStream(music);
+    CloseAudioDevice();
     CloseWindow();
     return flags;
 }
