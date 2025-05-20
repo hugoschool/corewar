@@ -66,7 +66,7 @@ typedef struct {
     bool is_index[MEM_SIZE];
 } map_t;
 void display_player(champion_t **champs, int cycles, linked_list_t *list);
-void display_end(champion_t **champ, int cycles, Texture2D skid, Music music);
+bool display_end(champion_t **champ, int cycles, Texture2D skid, Music music);
 void display_player_index(champion_t **champ, map_t *map);
 void display_dead(champion_t **champ);
 
@@ -79,7 +79,7 @@ void display_history(linked_list_t *list);
 
 // VM
 int do_vm_ray(flags_t *flags);
-void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
+bool gameloop_ray(map_t *map, flags_t *flags, champion_t **champ);
 int inst_ray(map_t *map, champion_t *champ, int proc_index, linked_list_t **list);
 int sti_ray(map_t *map, champion_t *champ, int proc_index);
 int st_ray(map_t *map, champion_t *champ, int proc_index);

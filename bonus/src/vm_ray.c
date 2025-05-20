@@ -40,6 +40,7 @@ int do_vm_ray(flags_t *flags)
     map_t map;
     int index = 0;
     champion_t **champ = setup_champions(flags);
+    bool restart = false;
 
     for (int i = 0; i < MEM_SIZE; i++) {
         map.byte[i] = 0;
@@ -54,8 +55,8 @@ int do_vm_ray(flags_t *flags)
         champ[i]->count_dead = 0;
         index += MEM_SIZE / flags->champions_amt;
     }
-    gameloop_ray(&map, flags, champ);
+    restart = gameloop_ray(&map, flags, champ);
     print_map(map.byte);
     free_champions(champ);
-    return 0;
+    return restart;
 }

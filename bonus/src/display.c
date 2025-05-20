@@ -52,7 +52,7 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
     DrawText(proc, 20, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
 }
 
-void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
+bool display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
 {
     char winner[PROG_NAME_LENGTH + 61];
     int nb_winner = 0;
@@ -69,12 +69,14 @@ void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
         if (champ[i]->alive)
             nb_winner = i;
     }
-    DrawTextureEx(skid, (Vector2){scrolling, 20}, 0.0f, 2.0f, WHITE);
-    DrawTextureEx(skid, (Vector2){skid.width*2 + scrolling, 20}, 0.0f, 2.0f, WHITE);
+    DrawTextureEx(skid, (Vector2){scrolling, 0}, 0.0f, 2.0f, WHITE);
+    DrawTextureEx(skid, (Vector2){skid.width*2 + scrolling, 0}, 0.0f, 2.0f, WHITE);
     DrawRectangleRounded(boutton, 0.05, 0.05, WHITE);
     DrawText("Restart", 22, 22, 50, BLACK);
-    if (CheckCollisionRecs(mouse, boutton))
-        printf("%f\n", mouse.x);
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (CheckCollisionRecs(mouse, boutton))
+            return true;
+    }
     sprintf(winner, "The Winner is player n°%d(%s)\nwith %d procs", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name, champ[nb_winner]->nb_procs);
     DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HEIGHT / 2 - 70, 70, YELLOW);
     DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5 - 30, 20, RAYWHITE);
@@ -85,6 +87,7 @@ void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
             y += 20;
         }
     }
+    return false;
 }
 
 void display_player_index(champion_t **champ, map_t *map)

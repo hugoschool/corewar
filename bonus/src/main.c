@@ -38,8 +38,10 @@ int main(int argc, char **argv)
     flags = parse_flags(argc, argv);
     if (!flags)
         return 84;
-    if (do_vm_ray(flags) == 84)
-        return_value = 84;
+    return_value = do_vm_ray(flags);
+    while(return_value == 1) {
+        return_value = do_vm_ray(flags);
+    }
     free_flags(flags);
     return return_value;
 }

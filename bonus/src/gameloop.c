@@ -175,18 +175,17 @@ void display_logo(champion_t **champ, Texture2D space, Music intro)
     DrawText("Press 'space' to start", 10, 10 , 30, WHITE);
 }
 
-void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
+bool gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
 {
     bool pause = 0;
     GameScreen screen = LOGO;
     int cycles = 0;
+    bool restart = false;
     linked_list_t *list = NULL;
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Corewar");
     InitAudioDevice();
     Image space_i = LoadImage("ressources/space.png");
     Texture2D space_t = LoadTextureFromImage(space_i);
-    Image skid_i = LoadImage("ressources/hacker.png");
-    Texture2D skid_t = LoadTextureFromImage(skid_i);
     Music music = LoadMusicStream("ressources/win.mp3");
     Music intro = LoadMusicStream("ressources/intro.mp3");
     SetTargetFPS(60);
@@ -207,16 +206,16 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
             run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         }
         if (screen == ENDING)
-            display_end(champ, cycles, skid_t, music);
+            restart = display_end(champ, cycles, space_t, music);
         EndDrawing();
+        if (restart)
+            break;
     }
     free_llist(list, free_history);
     UnloadMusicStream(music);
     UnloadMusicStream(intro);
     UnloadImage(space_i);
     UnloadTexture(space_t);
-    UnloadImage(skid_i);
-    UnloadTexture(skid_t);
     CloseWindow();
-    return;
+    return restart;
 }
