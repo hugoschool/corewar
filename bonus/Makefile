@@ -8,7 +8,6 @@
 INITSRC_DIR	=	../src
 INITSRC	=	$(INITSRC_DIR)/op.c \
 			$(INITSRC_DIR)/champions.c \
-			$(INITSRC_DIR)/flags.c \
 			$(INITSRC_DIR)/instructions/live.c \
 			$(INITSRC_DIR)/instructions/instructions.c \
 			$(INITSRC_DIR)/instructions/add.c \
@@ -29,6 +28,9 @@ SRC	=	$(INITSRC) \
 		src/gameloop.c \
 		src/display.c \
 		src/vm_ray.c \
+		src/keygen/keygen.c \
+		src/keygen/scrolling_text.c \
+		src/flags_ray.c \
 		src/colors.c \
 		src/inst_ray.c \
 		src/sti_ray.c \
@@ -52,10 +54,12 @@ endif
 RAYLIB	=	raylib-5.5_linux_amd64
 RAYLIB_TAR	=	$(RAYLIB).tar.gz
 RAYLIB_LINK	=	https://github.com/raysan5/raylib/releases/download/5.5/$(RAYLIB_TAR)
+RAYGUI	:= ./include/raygui.h
+RAYGUI_LINK	:= https://raw.githubusercontent.com/raysan5/raygui/refs/heads/master/src/raygui.h
 
 BINARY	=	corewar
 
-all:	$(RAYLIB) $(LIBMY) $(LIBLLIST) $(BINARY)
+all:	$(RAYLIB) $(RAYGUI) $(LIBMY) $(LIBLLIST) $(BINARY)
 
 $(LIBMY):
 	$(MAKE) -C $(dir $(LIBMY))
@@ -70,6 +74,9 @@ $(RAYLIB):
 	curl -Lo $(RAYLIB_TAR) $(RAYLIB_LINK)
 	tar -xvf $(RAYLIB_TAR)
 	$(RM) $(RAYLIB_TAR)
+
+$(RAYGUI):
+	wget -O $(RAYGUI) $(RAYGUI_LINK)
 
 clean:
 	$(MAKE) -C $(dir $(LIBLLIST)) clean

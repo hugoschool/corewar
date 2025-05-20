@@ -33,9 +33,7 @@ int main(int argc, char **argv)
     flags_t *flags = NULL;
     int return_value = 0;
 
-    if (argc < 2)
-        return 84;
-    if (my_strcmp(argv[1], "-h") == 0)
+    if (argc == 2 && my_strcmp(argv[1], "-h") == 0)
         return print_help();
     flags = parse_flags(argc, argv);
     if (!flags)

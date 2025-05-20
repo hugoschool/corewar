@@ -29,6 +29,36 @@ typedef enum GameScreen {
 extern const Color colors[];
 Color get_champ_color(int nb_player);
 
+// Flags
+    #define KEYGEN_SCREEN_WIDTH 600
+    #define KEYGEN_SCREEN_HEIGHT 600
+
+    #define KEYGEN_MAX_WIDTH KEYGEN_SCREEN_WIDTH
+
+    #define KEYGEN_TITLE_SCROLLING_TEXT "The Core War"
+    #define KEYGEN_TITLE_FONT_SIZE 50
+    #define KEYGEN_TITLE_SPEED 2
+    #define KEYGEN_CREDITS_SCROLLING_TEXT "Made with <3 by Hugo ARNAL & Esteban HAZANAS"
+    #define KEYGEN_CREDITS_FONT_SIZE 20
+    #define KEYGEN_CREDITS_SPEED 2
+    #define KEYGEN_SCROLLING_OFFSET 4
+
+    #define KEYGEN_FILE_FONT_SIZE 10
+
+    #define KEYGEN_BUTTON_WIDTH 70
+    #define KEYGEN_BUTTON_HEIGHT 20
+    #define KEYGEN_BUTTON_TEXT "Choose"
+
+    #define KEYGEN_EXIT_BUTTON_TEXT "Exit to launch Corewar :p"
+
+flag_prog_t *init_champions(void);
+int get_champions_amount(flags_t *flags);
+flags_t *handle_keygen(flags_t *flags);
+flags_t *init_flags(void);
+
+void scrolling_text(char *text, int *x, int y, int speed, int font_size, Color color, bool inverse);
+int default_scrolling_text_x(char *text, int max_width, int font_size, bool inverse);
+
 // Display
 typedef struct {
     unsigned char byte[MEM_SIZE];

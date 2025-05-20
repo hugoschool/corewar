@@ -15,6 +15,7 @@ bool add_to_map_and_champ(map_t *map,
     struct stat info;
 
     fseek(champ.fp, 0, SEEK_SET);
+    printf("pg_name: %s\n", champ.prog_name);
     if (stat(champ.prog_name, &info) == -1)
         return false;
     fread(&(champion->header), sizeof(header_t), 1, champ.fp);
