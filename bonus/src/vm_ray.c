@@ -50,6 +50,7 @@ int do_vm_ray(flags_t *flags)
             free_champions(champ);
             return 84;
         }
+        champ[i]->count_dead = 0;
         index += MEM_SIZE / flags->champions_amt;
     }
     gameloop_ray(&map, flags, champ);

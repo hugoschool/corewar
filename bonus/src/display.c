@@ -9,12 +9,14 @@
 #include "bonus.h"
 #include "raylib.h"
 #include "llist.h"
+#include "time.h"
 
 void display_player(champion_t **champs, int cycles, linked_list_t *list)
 {
     int disp = 10;
     char proc[100];
     Rectangle rect = {disp, 150, 200, 180};
+    Rectangle sub = {disp + 5, 155, 190, 170};
     linked_list_t *tmp = list;
     int y = 150;
     history_t *data = NULL;
@@ -33,11 +35,13 @@ void display_player(champion_t **champs, int cycles, linked_list_t *list)
         sprintf(proc, "nb of process: %d", champs[i]->nb_procs);
         DrawText(TextFormat("nb of process: %d", champs[i]->nb_procs), disp, 120, 20, RAYWHITE);
         rect.x = disp;
+        sub.x = disp + 5;
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
-        while (tmp != NULL && y < 200 + 130) {
+        DrawRectangleRounded(sub, 0.05, 0.05, BLACK);
+        while (tmp != NULL && y < 200 + 110) {
             data = tmp->data;
             if (champs[i]->nb_player == data->nb_player) {
-                DrawText(data->str, disp + 10, y, 20, get_champ_color(data->nb_player));
+                DrawText(data->str, disp + 10, y + 5, 20, get_champ_color(data->nb_player));
                 y += 20;
             }
             tmp = tmp->next;
@@ -54,6 +58,8 @@ void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
     int nb_winner = 0;
     static float scrolling = 0.0f;
     int y = 0;
+    Rectangle mouse = {GetMouseX(), GetMouseY(), 5, 5};
+    Rectangle boutton = {20, 20, 300, 50};
 
     UpdateMusicStream(music);
     scrolling -= 0.5f;
@@ -65,7 +71,11 @@ void display_end(champion_t **champ, int cycles, Texture2D skid, Music music)
     }
     DrawTextureEx(skid, (Vector2){scrolling, 20}, 0.0f, 2.0f, WHITE);
     DrawTextureEx(skid, (Vector2){skid.width*2 + scrolling, 20}, 0.0f, 2.0f, WHITE);
-    sprintf(winner, "The Winner is player n°%d(%s) with %d procs", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name, champ[nb_winner]->nb_procs);
+    DrawRectangleRounded(boutton, 0.05, 0.05, WHITE);
+    DrawText("Restart", 22, 22, 50, BLACK);
+    if (CheckCollisionRecs(mouse, boutton))
+        printf("%f\n", mouse.x);
+    sprintf(winner, "The Winner is player n°%d(%s)\nwith %d procs", champ[nb_winner]->nb_player, champ[nb_winner]->header.prog_name, champ[nb_winner]->nb_procs);
     DrawText(TextFormat(winner), SCREEN_WIDTH / 3 - 140, SCREEN_HEIGHT / 2 - 70, 70, YELLOW);
     DrawText(TextFormat("Total cycles: %d", cycles), SCREEN_WIDTH / 3, SCREEN_HEIGHT / 1.5 - 30, 20, RAYWHITE);
     for (int i = 0; champ[i] != NULL; i++) {
@@ -94,17 +104,33 @@ void display_history(linked_list_t *list)
     int y = 90;
     linked_list_t *tmp = list;
     Rectangle rect = {SCREEN_WIDTH / 1.25, 80, SCREEN_WIDTH / 6, 900};
+    Rectangle sub = {SCREEN_WIDTH / 1.25 + 5, 85, SCREEN_WIDTH / 6 - 10, 890};
     history_t *data = NULL;
 
     if (IsKeyPressed(KEY_H))
         history = !history;
     if (history) {
         DrawRectangleRounded(rect, 0.05, 0.05, WHITE);
+        DrawRectangleRounded(sub, 0.05, 0.05, BLACK);
         while (tmp != NULL && y < 950) {
             data = tmp->data;
             DrawText(data->str, i + 10, y, 40, get_champ_color(data->nb_player));
             y += 42;
             tmp = tmp->next;
+        }
+    }
+}
+
+void display_dead(champion_t **champ)
+{
+    for (int i = 0; champ[i] != NULL; i++) {
+        if (champ[i]->count_dead != 0 &&
+            (clock() - champ[i]->count_dead) / CLOCKS_PER_SEC < 5 &&
+            champ[i]->dead) {
+            DrawRectangle(SCREEN_WIDTH / 1.20, 0, 380, 70, WHITE);
+            DrawRectangle(SCREEN_WIDTH / 1.20 + 5, 5, 310, 60, BLACK);
+            DrawText(TextFormat("Player n°%d(%s) has died", champ[i]->nb_player, champ[i]->header.prog_name),
+            SCREEN_WIDTH / 1.20 + 7, 15, 20, colors[champ[i]->nb_player % 4]);
         }
     }
 }

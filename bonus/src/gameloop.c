@@ -11,12 +11,15 @@
 #include "raylib.h"
 #include "llist.h"
 #include <unistd.h>
+#include <time.h>
 
 void update_champions_and_cycles(champion_t **champ, int *cycles)
 {
     for (int i = 0; champ[i] != NULL; i++) {
-        if (!champ[i]->alive)
+        if (!champ[i]->alive) {
             champ[i]->dead = true;
+            champ[i]->count_dead = clock();
+        }
         for (int j = 0; j < champ[i]->nb_procs; j++) {
             champ[i]->procs[j].dead = champ[i]->procs[j].alive == true ?
                 false : true;
@@ -97,7 +100,7 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ,
     static int nb_live = 0;
     char lives[24];
     char nb_cycles[34];
-    static useconds_t sleep = 10;
+    static useconds_t sleep = 100000;
 
     usleep(sleep);
     if (pause == true && *screen != ENDING) {
@@ -148,6 +151,7 @@ void display_map(map_t *map, const int screenWidth, champion_t **champ, int cycl
         snprintf(buf, 3, "%02X", map->byte[i]);
         DrawText(buf, x, y, FONT_SIZE, map->color[i]);
     }
+    display_dead(champ);
 }
 
 void display_logo(champion_t **champ, Texture2D space, Music intro)
@@ -200,10 +204,10 @@ void gameloop_ray(map_t *map, flags_t *flags, champion_t **champ)
         if (screen == GAMEPLAY) {
             display_map(map, SCREEN_WIDTH, champ, cycles, list);
             display_history(list);
+            run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         }
         if (screen == ENDING)
             display_end(champ, cycles, skid_t, music);
-        run_one_cycle(map, flags, champ, &cycles, &screen, pause, &list);
         EndDrawing();
     }
     free_llist(list, free_history);

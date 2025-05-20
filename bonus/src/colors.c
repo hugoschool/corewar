@@ -17,5 +17,5 @@ const Color colors[] = {
 
 Color get_champ_color(int nb_player)
 {
-    return colors[(nb_player % (MAX_CHAMPIONS_AMT + 1)) - 1];
+    return colors[(nb_player % (MAX_CHAMPIONS_AMT))];
 }
