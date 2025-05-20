@@ -16,6 +16,7 @@
     #include <sys/stat.h>
     #include <limits.h>
     #include <stdint.h>
+    #include <time.h>
 
     #define DEFAULT_FLAG_NB -1
     #define MAX_CHAMPIONS_AMT 4
@@ -57,6 +58,7 @@ typedef struct champion_s {
     process_t *procs;
     int nb_procs;
     int nb_player;
+    clock_t count_dead;
     bool alive;
     bool dead;
 } champion_t;
