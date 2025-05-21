@@ -12,9 +12,12 @@ int get_champions_amount(flags_t *flags)
 {
     int nb = 0;
 
-    for (int i = 0; i < MAX_CHAMPIONS_AMT; i++)
+    for (int i = 0; i < MAX_CHAMPIONS_AMT; i++) {
         if (flags->champions[i].active)
             nb++;
+        else
+            break;
+    }
     return nb;
 }
 
