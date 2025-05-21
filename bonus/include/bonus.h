@@ -13,6 +13,7 @@
     #define INIT_Y 1080 / 3
     #define SCREEN_HEIGHT 1080
     #define SCREEN_WIDTH 1920
+    #define SLEEP_MOD 5
     #include <stdio.h>
     #include "corewar.h"
     #include "raylib.h"

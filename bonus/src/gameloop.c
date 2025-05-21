@@ -119,9 +119,9 @@ bool run_one_cycle(map_t *map, flags_t *flags, champion_t **champ,
         (*tot_cycles)++;
     }
     if (IsKeyPressed(KEY_DOWN))
-        sleep *= 1.5;
+        sleep *= SLEEP_MOD;
     if (IsKeyPressed(KEY_UP))
-        sleep /= 1.5;
+        sleep /= SLEEP_MOD;
     if (*screen == GAMEPLAY) {
         sprintf(lives, "Lives: %d / 40", nb_live);
         DrawText(lives, SCREEN_WIDTH / 3, SCREEN_HEIGHT / 3 - 20, 20, RAYWHITE);
